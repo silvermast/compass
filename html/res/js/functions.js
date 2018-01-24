@@ -23,6 +23,7 @@ function getDateTime(timestamp) {
 }
 
 function numberFormat(num, precision) {
+    num = isNumber(num) && !isNaN(num) ? num : 0;
     precision = precision === undefined ? 2 : precision;
     return parseFloat(num).toFixed(precision)
 }

@@ -26,7 +26,7 @@
             <div class="text-center hidden-sm hidden-md hidden-lg">
                 <div class="btn btn-link" data-toggle="collapse" data-target="#navbar, #sidebar">Close</div>
             </div>
-            <hr class="hidden-sm hidden-md hidden-lg" />
+            <hr class="hidden-sm hidden-md hidden-lg mv-20" />
         </section>
 
         <section class="col-xs-12 col-sm-10 col-sm-offset-2 main">
@@ -73,11 +73,13 @@
                 </div>
 
             </div>
-            <div>
-                Worth: ${{total_worth.toFixed(2)}}
-                Hours: {{total_hours}}
+
+            <div class="invoice--totals mt-20 ml-5">
+                <small class="pr-20">Worth: <strong class="text-success" v-text="'$' + numberFormat(total_worth, 2)"></strong></small>
+                <small class="pr-20">Hours: <strong class="text-success" v-text="total_hours"></strong></small>
             </div>
-            <hr>
+
+            <hr class="mb-20">
 
             <table class="table table-bordered card">
                 <thead>

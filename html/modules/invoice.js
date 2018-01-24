@@ -212,21 +212,22 @@ var _vueObj = {
                 return;
 
             var tData = clone(vm.tasks[task_i]);
-            tData.start_time = tData._date + 'T' + tData._time_start + ':00Z';
+            tData.start_time = tData._date + 'T' + tData._time_start + ':00';
 
             if (tData._time_end)
-                tData.end_time = tData._date + 'T' + tData._time_end + ':00Z';
+                tData.end_time = tData._date + 'T' + tData._time_end + ':00';
 
             tData.invoice_id    = vm.invoice.invoice_id;
             tData.invoice_title = vm.invoice.invoice_title;
             tData.client        = vm.invoice.client;
 
-            vm.tasks[task_i]._xhr = $.post({
+            $.post({
                 dataType: 'json',
                 url: '/api/task/save',
                 data: tData,
                 success: function(result) {
-                    vm.$set(vm.tasks, task_i, vm.formatTask(result));
+                    var newTask = vm.formatTask(result);
+                    vm.$set(vm.tasks, task_i, newTask);
 
                     if (!vm.tasks[0] || vm.tasks[0]._complete)
                         vm.addTask();
