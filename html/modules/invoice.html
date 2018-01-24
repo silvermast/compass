@@ -18,7 +18,7 @@
                 <div class="nav-sidebar-title bg-primary"><strong v-text="StatusOptions.types[index_key]"></strong></div>
                 <ul class="nav nav-sidebar nav-sidebar-content">
                     <li :class="{active: index_list_item.slug === params.slug}" v-for="index_list_item in index_list">
-                        <a class="index-anchor" :href="'#/invoice/v/' + index_list_item.slug"><i class="fa fa-book"></i> <span v-text="index_list_item.title"></span></a>
+                        <a class="index-anchor" :href="'#/invoice/v/' + index_list_item.slug"><i class="fa fa-book"></i> <span v-text="index_list_item.client + ' - ' + index_list_item.title"></span></a>
                     </li>
                 </ul>
             </template>
