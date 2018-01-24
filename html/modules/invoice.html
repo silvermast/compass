@@ -1,0 +1,115 @@
+<div>
+    <div class="row">
+
+        <section class="col-xs-12 col-sm-2 sidebar">
+            <div class="hidden-sm hidden-md hidden-lg" style="height: 120px;"></div>
+
+            <ul class="nav nav-sidebar nav-sidebar-sticky">
+                <!--<li>-->
+                    <!--<input id="search" type="search" class="form-control sidebar-search" placeholder="Search" v-model="query" autofocus style="padding-right:2em;">-->
+                    <!--<span class="search-clear" @click="query = ''" v-show="query"><i class="fa fa-times-circle"></i></span>-->
+                <!--</li>-->
+                <li :class="{active: !params.slug}">
+                    <a class="index-anchor" href="#/" tabindex="-1"><span class="fa fa-plus"></span> Add New Invoice</a>
+                </li>
+            </ul>
+
+            <template v-for="(index_list, index_key) in index" v-if="index_list.length">
+                <div class="nav-sidebar-title bg-primary"><strong v-text="StatusOptions.types[index_key]"></strong></div>
+                <ul class="nav nav-sidebar nav-sidebar-content">
+                    <li :class="{active: index_list_item.slug === params.slug}" v-for="index_list_item in index_list">
+                        <a class="index-anchor" :href="'#/invoice/v/' + index_list_item.slug"><i class="fa fa-book"></i> <span v-text="index_list_item.title"></span></a>
+                    </li>
+                </ul>
+            </template>
+
+            <div class="text-center hidden-sm hidden-md hidden-lg">
+                <div class="btn btn-link" data-toggle="collapse" data-target="#navbar, #sidebar">Close</div>
+            </div>
+            <hr class="hidden-sm hidden-md hidden-lg" />
+        </section>
+
+        <section class="col-xs-12 col-sm-10 col-sm-offset-2 main">
+            <x-alerts :alerts="alerts" />
+
+            <br>
+            <div class="form-inline">
+
+                <div class="form-group">
+                    <input type="text" class="form-control input-lg borderless w-300" v-model="invoice.title">
+                    <div class="under-label">Title</div>
+                </div>
+                <div class="form-group">
+                    <input type="text" class="form-control input-lg borderless" v-model="invoice.client">
+                    <div class="under-label">Client</div>
+                </div>
+                <div class="form-group">
+                    <input type="number" class="form-control input-lg borderless w-100" v-model="invoice.rate" step="5">
+                    <div class="under-label">Rate</div>
+                </div>
+
+                <div class="form-group">
+                    <div class="dropdown pointer">
+                        <button type="button" class="btn btn-lg dropdown-toggle w-150"
+                                :class="'btn-' + StatusOptions.colors[invoice.status]"
+                                id="statusDropdownButton"
+                                data-toggle="dropdown"
+                                aria-haspopup="true"
+                                aria-expanded="false">
+                            {{StatusOptions.types[invoice.status]}}
+                            <span class="pull-right"><i class="fa fa-chevron-down"></i></span>
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="statusDropdownButton">
+                            <li v-for="(so_name, so_key) in StatusOptions.types" @click="$set(invoice, 'status', so_key)"><a class="pointer" v-text="so_name"></a></li>
+                        </div>
+                    </div>
+
+                    <div class="under-label">&nbsp;</div>
+                </div>
+
+                <div class="form-group">
+                    <button type="button" class="btn btn-success btn-lg" @click="saveInvoice()"><i class="fa fa-save"></i> Save</button>
+                    <div class="under-label">&nbsp;</div>
+                </div>
+
+            </div>
+            <div>
+                Worth: ${{total_worth.toFixed(2)}}
+                Hours: {{total_hours}}
+            </div>
+            <hr>
+
+            <table class="table table-bordered card">
+                <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Notes</th>
+                    <th width="100">Date</th>
+                    <th width="100">Start</th>
+                    <th width="100">End</th>
+                    <th width="80">Elapsed</th>
+                    <th class="text-center"><i class="fa fa-save"></i></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr v-for="(task, task_i) in tasks">
+                    <td class="td-input"><input class="form-control" type="text" v-model="task.title"></td>
+                    <td class="td-input"><input class="form-control" type="text" v-model="task.notes"></td>
+                    <td class="td-input"><input class="form-control" type="date" v-model="task._date"></td>
+                    <td class="td-input"><input class="form-control" type="time" v-model="task._time_start"></td>
+                    <td class="td-input"><input class="form-control" type="time" v-model="task._time_end"></td>
+                    <td><span class="field-text" v-text="task._elapsed"></span></td>
+                    <td class="text-center pointer"
+                        @click="saveTask(task_i)"
+                        :class="{'bg-success': !task._complete}">
+                        <i class="fa fa-save"></i>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+
+        </section>
+
+    </div>
+</div>

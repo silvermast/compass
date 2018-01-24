@@ -1,0 +1,5 @@
+.idea
+.DS_Store
+update_history.json
+config.json
+log
