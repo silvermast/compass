@@ -3,3 +3,5 @@
 update_history.json
 config.json
 log
+node_modules
+bower_components
