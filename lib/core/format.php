@@ -23,6 +23,14 @@ class Format {
     }
 
     /**
+     * @param $str
+     * @return string
+     */
+    public static function snake_to_caps($str) {
+        return ucwords(str_replace('_', ' ', $str));
+    }
+
+    /**
      * Adds or subtracts www from a root level domain
      * @param $domain
      * @return bool|string
@@ -34,6 +42,10 @@ class Format {
             return "www.$domain"; // add www version
 
         return false;
+    }
+
+    public static function money($number) {
+        return money_format('$%i', $number);
     }
 
 }

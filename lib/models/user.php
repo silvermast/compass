@@ -46,6 +46,13 @@ class User extends core\Model {
         return $this;
     }
 
+    public function authenticate() {
+        if (!session_id())
+            session_start();
+
+        $_SESSION['user_id'] = $this->user_id;
+    }
+
     /**
      * Returns the authenticated user
      * @return User|null

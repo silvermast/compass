@@ -1,8 +1,7 @@
 var _vueObj = {
     data: {
         isBusy: {},
-        params: {},
-        alerts: {},
+        nav: {},
 
         query: '',
         index: {
@@ -53,7 +52,6 @@ var _vueObj = {
                 dataType: 'json',
                 url: '/api/invoice/list',
                 success: function(result) {
-                    vm.alerts = {};
 
                     var index = {
                         in_progress: [],
@@ -69,9 +67,6 @@ var _vueObj = {
                     });
 
                     vm.index = index;
-                },
-                error: function(jqXHR) {
-                    vm.alerts = {error: jqXHR.responseText};
                 },
             });
         },
@@ -93,9 +88,6 @@ var _vueObj = {
                     vm.invoice._is_locked = vm.invoice.status !== 'in_progress';
 
                     vm.loadTasks();
-                },
-                error: function(jqXHR) {
-                    vm.alerts = {error: jqXHR.responseText};
                 },
             });
         },
@@ -119,9 +111,6 @@ var _vueObj = {
 
                     if (!vm.tasks[0] || vm.tasks[0]._complete)
                         vm.addTask();
-                },
-                error: function(jqXHR) {
-                    vm.alerts = {error: jqXHR.responseText};
                 },
             });
         },
@@ -195,9 +184,8 @@ var _vueObj = {
                     } else {
                         location.href = '#/invoice/v/' + result.slug;
                     }
-                },
-                error: function(jqXHR) {
-                    vm.alerts = {error: jqXHR.responseText};
+
+                    Alerts.success("Successfully saved invoice '" + vm.invoice.title + "'");
                 },
             });
         },
@@ -231,9 +219,8 @@ var _vueObj = {
 
                     if (!vm.tasks[0] || vm.tasks[0]._complete)
                         vm.addTask();
-                },
-                error: function(jqXHR) {
-                    vm.alerts = {error: jqXHR.responseText};
+
+                    Alerts.success("Successfully saved the task '" + newTask.title + "'");
                 },
             });
         },

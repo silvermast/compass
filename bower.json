@@ -1,0 +1,25 @@
+{
+  "name": "compass.blackmast.org",
+  "authors": [
+    "Jason <jason@blackmast.org>"
+  ],
+  "description": "",
+  "main": "",
+  "license": "MIT",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "font-awesome": "fontawesome#^4.7.0",
+    "vue": "^2.5.13",
+    "jquery": "^3.3.1",
+    "director": "^1.2.8",
+    "bootstrap": "^4.0.0",
+    "noty": "^3.1.4"
+  }
+}

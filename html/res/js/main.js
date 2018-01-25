@@ -20,33 +20,37 @@ var routes = {
 var router = new Router(routes);
 router.init();
 
+var Alerts = {
+    alert: function(obj) {
+        new Noty(obj).show();
+    },
+    success: function(msg, opts) {
+        this.alert($.extend({}, {type: 'success', text: msg}, opts));
+    },
+    error: function(msg, opts) {
+        this.alert($.extend({}, {type: 'error', text: msg}, opts));
+    },
+    warning: function(msg, opts) {
+        this.alert($.extend({}, {type: 'warning', text: msg}, opts));
+    },
+    info: function(msg, opts) {
+        this.alert($.extend({}, {type: 'info', text: msg}, opts));
+    },
+};
 
-/**
- * Globally loaded NavBar
- * @type {Vue}
- */
-var NavBar = new Vue({
-    el: '#vue-nav-bar',
-    data: {
-        modules: {
-            invoice: {
-                title: 'Invoices',
-                href: '#/invoice/list',
-            },
-        }
-    },
-    methods: {
-        isActive: function(module) {
-            return location.hash.indexOf(module.href) === 0;
-        },
-    },
+Noty.overrideDefaults({
+    closeWith: ['click', 'button'],
+    timeout: 5000,
+    layout: 'bottomRight',
+    theme: 'none',
 });
+
 
 /**
  * Clears the page and puts in a 'not found' alert
  */
 function pageNotFound() {
-    $app.html("<div class='alert alert-danger'>404: Page not found.</div>");
+    $('#vue-app').html("<div class='alert alert-danger'>404: Page not found.</div>");
 }
 
 /**
@@ -80,8 +84,6 @@ function loadModule(module, params) {
             window.App.$destroy();
 
         window.App = new Vue(_vueObj);
-
-        NavBar.$forceUpdate();
     }
 
     $.get({
@@ -104,7 +106,7 @@ function loadModule(module, params) {
  * Vue Templates
  */
 Vue.component('x-loader', {template: '#x-loader-template'});
-Vue.component('x-alerts', {template: '#x-alerts-template', props: {alerts: Object}});
+Vue.component('x-nav', {template: '#x-nav-template'});
 Vue.component('x-login-form', {
     template: '#x-login-form',
     data: function() {
@@ -130,10 +132,11 @@ Vue.component('x-login-form', {
                 },
                 dataType: 'json',
                 success: function(result) {
-                    LocalDB.set('user', result.user);
+                    LocalDB.set('user', result);
+                    vm.$emit('input', result);
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
-                    vm.alerts.error = jqXHR.responseText;
+                    Alerts.error(jqXHR.responseText, {layout: 'topCenter'});
                 }
             });
 
@@ -141,14 +144,40 @@ Vue.component('x-login-form', {
     }
 });
 
-var vue_container = new Vue({
-    el: '#page-container',
+/**
+ * Default vue options & methods
+ */
+Vue.mixin({
+    data: function() {
+        return {
+            user: LocalDB.get('user'),
+            params: {},
+            alerts: {},
+            nav: {
+                left: [],
+                right: [],
+            },
+        }
+    },
 });
+
 
 
 /**
  * jQuery Events
  */
+$.ajaxSetup({
+    error: function(jqXHR, textStatus, errorThrown) {
+        Alerts.error(jqXHR.responseText);
+    },
+    statusCode: {
+        401: function() {
+            Alerts.error("You have been logged out.", {layout: 'topCenter'});
+            App.user = false;
+            LocalDB.del('user');
+        },
+    }
+});
 
 $(document).on('click', '[href]', function(e) {
     var href = $(this).attr('href');
@@ -164,22 +193,3 @@ $(document).on('click', '[href]', function(e) {
 $(document).on('click', '.btn', function() {
     $(this).blur();
 });
-
-
-/**
- * Structs
- */
-var InvoiceStatus = {
-    default:     {name: 'Default', color: 'default'},
-    ignore:      {name: 'Ignore', color: 'info'},
-    watch:       {name: 'Watch', color: 'warning'},
-    negotiating: {name: 'Negotiating', color: 'success'},
-    owned:       {name: 'Owned', color: 'primary'},
-};
-
-var TaskStatus = {
-    // queued:      {name: 'Queued', color: 'info'},
-    // in_progress: {name: 'In Progress', color: 'warning'},
-    // complete:    {name: 'Complete', color: 'success'},
-    // failed:      {name: 'Failed', color: 'danger'},
-};

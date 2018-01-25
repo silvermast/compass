@@ -6,16 +6,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" href="/res/img/favicon.png" />
 
-    <title>BlackMast Tasks</title>
+    <title>Compass</title>
 
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Condensed">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" href="/res/css/bootstrap-flatly.min.css">
-    <link href="/res/css/main.css" rel="stylesheet">
+    <link rel="stylesheet" href="/res/css/plugins.css">
+    <link rel="stylesheet" href="/res/css/main.css">
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Condensed">
+    <link rel="stylesheet" href="/res/css/font-awesome.min.css">
+
+    <script src="/res/js/plugins.min.js"></script>
 </head>
 
 <body>
 
+    <div class="container-fluid">
+        <div id="vue-app"></div>
+    </div>
+
+<noscript><h1>Javascript is required to use this application.</h1></noscript>
+</body>
+
+<script id="x-nav-template" type="text/x-template">
     <nav id="vue-nav-bar" class="navbar navbar-default navbar-fixed-top">
         <div class="container-fluid">
             <div class="navbar-header">
@@ -32,57 +45,52 @@
             </div>
 
             <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav navbar-left hidden-xs">
-                    <li v-for="module in modules" :class="{active: isActive(module)}"><a :href="module.href" v-text="module.title"></a></li>
+                <ul class="nav navbar-nav navbar-left hidden-xs" v-if="count(nav.left)">
+                    <li v-for="link in nav.left"><a :href="link.url" v-text="link.title"></a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right hidden-xs" v-if="count(nav.right)">
+                    <li v-for="link in nav.right"><a :href="link.url" v-text="link.title"></a></li>
                 </ul>
             </div>
         </div>
     </nav>
-
-    <div class="container-fluid">
-        <div id="vue-app"></div>
-    </div>
-
-<noscript><h1>Javascript is required to use this application.</h1></noscript>
-</body>
-
-<!-- Alerts template. Used for displaying API call alerts -->
-<script id="x-alerts-template" type="text/x-template">
-    <div class="alerts-container x-alerts">
-        <div class="alert alert-danger" v-if="alerts.error" v-html="alerts.error"></div>
-        <div class="alert alert-success" v-if="alerts.success" v-html="alerts.success"></div>
-        <div class="alert alert-warning" v-if="alerts.warning" v-html="alerts.warning"></div>
-        <div class="alert alert-info" v-if="alerts.info" v-html="alerts.info"></div>
-    </div>
 </script>
 
 <script id="x-login-form" type="text/x-template">
-    <div id="login-container">
-        <form class="form-signin" @submit="loginAttempt">
+    <div id="login-container" class="container">
 
-            <x-alerts :alerts="alerts"></x-alerts>
+        <div class="row">
+            <div class="col-xs-12 col-md-4 col-md-offset-4">
+                <form class="form-signin" @submit="loginAttempt">
 
-            <h2 class="form-signin-heading">Please sign in</h2>
+                    <x-alerts :alerts="alerts"></x-alerts>
 
-            <label>Email:</label>
-            <input type="email" class="form-control" placeholder="user@blackmast.io" v-model="email" tabindex="1" required autofocus>
-            <br />
+                    <h2 class="form-signin-heading">Please sign in</h2>
 
-            <label>Password:</label>
-            <input type="password" class="form-control" placeholder="somepass123" v-model="pass" required>
-            <br />
+                    <label>Email:</label>
+                    <input type="email" class="form-control" placeholder="user@blackmast.io" v-model="email" tabindex="1" required autofocus>
+                    <br />
 
-            <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-        </form>
+                    <label>Password:</label>
+                    <input type="password" class="form-control" placeholder="somepass123" v-model="pass" required>
+                    <br />
+
+                    <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+                </form>
+            </div>
+        </div>
     </div>
 </script>
 
 
-<link rel="stylesheet" href="/res/css/font-awesome.min.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>-->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.13/vue.min.js"></script>
-<script src="/res/js/director.min.js"></script>
+<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.13/vue.min.js"></script>-->
+<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.min.js"></script>-->
+<!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.css">-->
+
+<!--<script src="/res/js/director.min.js"></script>-->
 <script src="/res/js/functions.js"></script>
 <script src="/res/js/main.js"></script>
 </html>

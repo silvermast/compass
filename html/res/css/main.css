@@ -27,6 +27,8 @@ a:focus {
 .strong, .bold { font-weight: bold; }
 .em, .italic { font-style: italic; }
 
+.btn { border-radius: 0; }
+
 /*
  * Global add-ons
  */
@@ -127,6 +129,14 @@ nav .logo {
     margin-top: 0;
 }
 
+/*
+ * Noty Style overrides
+ */
+.noty_bar { padding: 1rem 2rem; color: white; font-weight: bold; }
+.noty_type__success { background-color: #18bc9c; border-color: #18bc9c; }
+.noty_type__info { background-color: #3498db; border-color: #3498db; }
+.noty_type__warning { background-color: #f39c12; border-color: #f39c12; }
+.noty_type__error { background-color: #e74c3c; border-color: #e74c3c; }
 
 /*
  * Placeholder dashboard ideas
