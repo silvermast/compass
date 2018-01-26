@@ -26,8 +26,12 @@ var _vueObj = {
         },
     },
     created: function() {
-        this.loadIndex();
-        this.loadInvoice();
+        var vm = this;
+        vm.loadIndex();
+        vm.loadInvoice();
+
+        // update the default date every minute for unfinished tasks
+        setInterval(vm.loadTasks, 60000);
     },
     watch: {
         "params.slug": function() {
@@ -46,6 +50,7 @@ var _vueObj = {
         },
     },
     methods: {
+
         loadIndex: function() {
             var vm = this;
             $.get({
