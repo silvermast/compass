@@ -299,6 +299,15 @@ th label.checkbox input[type=checkbox] {
     border: 0;
     height: 34px;
 }
+.td-button,
+.table > tbody > tr > .td-button {
+    padding-top: 1.25rem;
+    text-align: center;
+    cursor: pointer;
+}
+.td-button:active {
+    background-color: #d9edf7;
+}
 
 .m-5 { margin: 5px; }
 .mt-5 { margin-top: 5px; }

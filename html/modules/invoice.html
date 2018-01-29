@@ -108,9 +108,9 @@
                         <td class="td-input"><input class="form-control" type="time" v-model="task._time_start"></td>
                         <td class="td-input"><input class="form-control" type="time" v-model="task._time_end"></td>
                         <td><span class="field-text" v-text="task._elapsed"></span></td>
-                        <td class="text-center pointer"
+                        <td class="td-button"
                             @click="saveTask(task_i)"
-                            :class="{'bg-success': !task._complete}">
+                            :class="{'bg-warning': !task._complete}">
                             <i class="fa fa-save"></i>
                         </td>
                     </tr>

@@ -29,9 +29,14 @@ var _vueObj = {
         var vm = this;
         vm.loadIndex();
         vm.loadInvoice();
+        vm.loadTasks();
 
         // update the default date every minute for unfinished tasks
-        setInterval(vm.loadTasks, 60000);
+        setInterval(function() {
+            if (vm.tasks && vm.tasks.length)
+                vm.tasks = vm.tasks.map(vm.formatTask);
+            
+        }, 60000);
     },
     watch: {
         "params.slug": function() {
@@ -144,29 +149,30 @@ var _vueObj = {
          * @returns {*}
          */
         formatTask: function(t) {
+            var StartTime, EndTime;
             if (!t.start_time) { // if start_time not set, assume we're setting to now
-                t.start_time = this.getDefaultDate();
-                t._complete  = false;
+                StartTime   = this.getDefaultDate();
+                t._complete = false;
             } else if (!t.end_time) { // if end_time not set, assume we're setting to now
-                t.start_time = new Date(t.start_time);
-                t.end_time   = this.getDefaultDate();
-                t._complete  = false;
+                StartTime   = new Date(t.start_time);
+                EndTime     = this.getDefaultDate();
+                t._complete = false;
             } else { // calculate elapsed time
-                t.start_time = new Date(t.start_time);
-                t.end_time   = new Date(t.end_time);
-                t._elapsed   = timeFormat(Math.floor((t.end_time - t.start_time) / 1000));
-                t._elapsed_h = (t.end_time - t.start_time) / 3600000;
+                StartTime    = new Date(t.start_time);
+                EndTime      = new Date(t.end_time);
+                t._elapsed   = timeFormat(Math.floor((EndTime - StartTime) / 1000));
+                t._elapsed_h = (EndTime - StartTime) / 3600000;
                 t._complete  = true;
             }
 
             if (!t.task_id)
                 t._complete = false;
 
-            t._date = t.start_time.toISOString().split('T')[0];
-            t._time_start = getTimeString(t.start_time);
+            t._date = StartTime.toISOString().split('T')[0];
+            t._time_start = getTimeString(StartTime);
 
-            if (t.end_time)
-                t._time_end = getTimeString(t.end_time);
+            if (EndTime)
+                t._time_end = getTimeString(EndTime);
 
             return t;
         },
