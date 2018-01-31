@@ -2,7 +2,7 @@
     <x-login-form v-model="user" v-if="!user" />
 
     <template v-else>
-        <x-nav :nav="nav" />
+        <x-owner-nav selected="invoice" />
 
         <div class="row">
 
@@ -20,7 +20,7 @@
                 </ul>
 
                 <template v-for="(index_list, index_key) in index" v-if="index_list.length">
-                    <div class="nav-sidebar-title bg-primary"><strong v-text="StatusOptions.types[index_key]"></strong></div>
+                    <div class="nav-sidebar-title bg-primary"><strong v-text="InvoiceStatusOptions.types[index_key]"></strong></div>
                     <ul class="nav nav-sidebar nav-sidebar-content">
                         <li :class="{active: index_list_item.slug === params.slug}" v-for="index_list_item in index_list">
                             <a class="index-anchor" :href="'#/invoice/v/' + index_list_item.slug"><i class="fa fa-book"></i> <span v-text="index_list_item.client + ' - ' + index_list_item.title"></span></a>
@@ -56,16 +56,16 @@
                     <div class="form-group">
                         <div class="dropdown pointer">
                             <button type="button" class="btn btn-lg dropdown-toggle w-150"
-                                    :class="'btn-' + StatusOptions.colors[invoice.status]"
+                                    :class="'btn-' + InvoiceStatusOptions.colors[invoice.status]"
                                     id="statusDropdownButton"
                                     data-toggle="dropdown"
                                     aria-haspopup="true"
                                     aria-expanded="false">
-                                {{StatusOptions.types[invoice.status]}}
+                                {{InvoiceStatusOptions.types[invoice.status]}}
                                 <span class="pull-right"><i class="fa fa-chevron-down"></i></span>
                             </button>
                             <div class="dropdown-menu" aria-labelledby="statusDropdownButton">
-                                <li v-for="(so_name, so_key) in StatusOptions.types" @click="$set(invoice, 'status', so_key)"><a class="pointer" v-text="so_name"></a></li>
+                                <li v-for="(so_name, so_key) in InvoiceStatusOptions.types" @click="$set(invoice, 'status', so_key)"><a class="pointer" v-text="so_name"></a></li>
                             </div>
                         </div>
 

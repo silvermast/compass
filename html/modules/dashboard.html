@@ -1,0 +1,69 @@
+<div>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
+
+    <x-login-form v-model="user" v-if="!user" />
+
+    <template v-else>
+        <x-owner-nav selected="dashboard" />
+
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-6">
+                    <h1 class="pull-left">Dashboard</h1>
+                    <div class="dropdown pointer pull-left mt-20 pl-20">
+                        <span class="btn btn-link text-primary btn-lg dropdown-toggle"
+                                id="statusDropdownButton"
+                                data-toggle="dropdown"
+                                aria-haspopup="true"
+                                aria-expanded="false">
+                            {{filter.dateRange.options[filter.dateRange.value]}}
+                            <span class="pull-right"><i class="fa fa-chevron-down"></i></span>
+                        </span>
+                        <div class="dropdown-menu" aria-labelledby="statusDropdownButton">
+                            <li v-for="(_name, _key) in filter.dateRange.options" @click="$set(filter.dateRange, 'value', _key)"><a class="pointer" v-text="_name"></a></li>
+                        </div>
+                    </div>
+
+                    <br class="clearfix">
+                </div>
+            </div>
+
+            <div class="row">
+
+                <div class="col-md-4 col-sm-12">
+                    <div class="card h-350">
+                        <h2>Breakdown</h2>
+
+                        <x-loader v-if="isBusy" />
+                        <canvas id="total-earnings-chart" width="500" height="400"></canvas>
+                    </div>
+                </div>
+
+                <div class="col-md-4 col-sm-12">
+                    <div class="card h-350">
+                        <h2>Aggregates</h2>
+
+                        <x-loader v-if="isBusy" />
+                        <table class="table">
+                            <tr>
+                                <th>Total</th>
+                                <td v-text="'$' + numberFormat(totalEarnings, 2)"></td>
+                            </tr>
+                            <tr>
+                                <th>Total Hours</th>
+                                <td v-text="numberFormat(totalHours, 2)"></td>
+                            </tr>
+                            <tr>
+                                <th>Avg. Hourly</th>
+                                <td v-text="'$' + numberFormat(totalEarnings / totalHours, 2)"></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+
+    </template>
+</div>

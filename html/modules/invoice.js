@@ -11,19 +11,6 @@ var _vueObj = {
         },
         invoice: {},
         tasks: [],
-
-        StatusOptions: {
-            types: {
-                in_progress: 'In Progress',
-                sent: 'Sent',
-                paid: 'Paid',
-            },
-            colors: {
-                in_progress: 'warning',
-                sent: 'success',
-                paid: 'default',
-            },
-        },
     },
     created: function() {
         var vm = this;
@@ -35,7 +22,7 @@ var _vueObj = {
         setInterval(function() {
             if (vm.tasks && vm.tasks.length)
                 vm.tasks = vm.tasks.map(vm.formatTask);
-            
+
         }, 60000);
     },
     watch: {

@@ -3,6 +3,20 @@ if (!location.hash) location.href = "/#/";
 
 
 var routes = {
+    '/logout': function() {
+        $.get('/api/logout', function(result) {
+            Alerts.success(result, {layout: 'topCenter', timeout: 1000});
+            LocalDB.del('user');
+            location.hash = '#/';
+            if (App) {
+                App.user = null;
+                App.$forceUpdate();
+            }
+        });
+    },
+    '/dashboard': function() {
+        loadModule('dashboard');
+    },
     '/invoice/v/:invoice_id': function(slug) {
         loadModule('invoice', {slug: slug});
     },
@@ -10,7 +24,7 @@ var routes = {
         loadModule('invoice');
     },
     '/': function() {
-        location.hash = '#/invoice/new';
+        location.hash = '#/dashboard';
     },
 };
 
@@ -106,7 +120,7 @@ function loadModule(module, params) {
  * Vue Templates
  */
 Vue.component('x-loader', {template: '#x-loader-template'});
-Vue.component('x-nav', {template: '#x-nav-template'});
+Vue.component('x-owner-nav', {template: '#x-owner-nav-template', props: ['selected']});
 Vue.component('x-login-form', {
     template: '#x-login-form',
     data: function() {
@@ -134,6 +148,7 @@ Vue.component('x-login-form', {
                 success: function(result) {
                     LocalDB.set('user', result);
                     vm.$emit('input', result);
+                    Alerts.success("Successfully logged in.", {layout: 'topRight', timeout: 1000});
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
                     Alerts.error(jqXHR.responseText, {layout: 'topCenter'});
@@ -157,6 +172,19 @@ Vue.mixin({
                 left: [],
                 right: [],
             },
+
+            InvoiceStatusOptions: {
+                types: {
+                    in_progress: 'In Progress',
+                    sent: 'Sent',
+                    paid: 'Paid',
+                },
+                colors: {
+                    in_progress: 'warning',
+                    sent: 'success',
+                    paid: 'default',
+                },
+            }
         }
     },
 });

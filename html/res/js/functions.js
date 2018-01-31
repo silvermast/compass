@@ -14,6 +14,31 @@ var LocalDB = {
     },
 };
 
+/**
+ * Loads external libraries
+ * @type {{_js: {}, _css: {}, javascript: Load.javascript, css: Load.css}}
+ */
+var Load = {
+    _js: {},
+    _css: {},
+
+    javascript: function(script, donefn) {
+        if (this._js[script]) return;
+        this._js[script] = true;
+        $.getScript(script, donefn);
+    },
+
+    css: function(script, donefn) {
+        if (this._css[script]) return;
+        this._css[script] = true;
+        $('head').append('<link rel="stylesheet" href="' + script + '" />');
+    },
+
+    chartjs: function(donefn) {
+        this.javascript('https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js', donefn);
+    },
+};
+
 function getDateTime(timestamp) {
     if (!timestamp || timestamp < 2000)
         return '';
@@ -52,6 +77,44 @@ function isString(param) {
     return typeof param === "string";
 }
 
+/**
+ *
+ * @param obj
+ * @returns {Array}
+ */
+function objKeys(obj) {
+    return Object.keys(obj);
+}
+
+function generateColors(num) {
+    return [
+        '#0032eb',
+        '#ff3969',
+        '#ffce56',
+        '#cc65fe',
+        '#36a2eb',
+        '#39d344',
+        '#ff6384',
+        '#6c65fe',
+    ].splice(0, num || 1);
+}
+
+/**
+ *
+ * @param obj
+ * @returns {Array}
+ */
+function objValues(obj) {
+    if (Object.values) {
+        return Object.values(obj);
+    } else {
+        var arr = [];
+        for (var i in obj)
+            arr.push(obj[i]);
+        return arr;
+    }
+}
+
 function getTimeString(date) {
     return [
         ('00' + date.getHours()).substr(-2),
@@ -87,3 +150,76 @@ function timeFormat(seconds) {
 
     return res.trim() || '0s';
 }
+
+/**
+ * generates two dates from a report date struct key
+ * @param key
+ * @returns {[Date,Date]}
+ */
+function dateRangeFromKey(key) {
+    var sDate = new Date();
+    var eDate = new Date();
+
+    sDate.setDate(1); // use first of month
+    sDate.setHours(0);
+    sDate.setMinutes(0);
+    sDate.setSeconds(0);
+    eDate.setDate(1); // use first of month
+    sDate.setHours(23);
+    sDate.setMinutes(59);
+    sDate.setSeconds(59);
+
+    switch (key) {
+        case 'thisMonth':
+            eDate.setMonth(eDate.getMonth() + 1); // set to first day next month
+            eDate.setDate(-1); // subtract 1 day
+            break;
+
+        case 'lastMonth':
+            sDate.setMonth(-1); // -1 month from start date
+            eDate.setDate(-1); // -1 day from end date
+            break;
+
+        case 'last3Months':
+            sDate.setMonth(-3);
+            eDate.setDate(-1);
+            break;
+
+        case 'last6Months':
+            sDate.setMonth(-6);
+            eDate.setDate(-1);
+            break;
+
+        case 'last12Months':
+            sDate.setMonth(-12);
+            eDate.setDate(-1);
+            break;
+
+        case 'thisYear':
+            sDate.setMonth(0);
+            eDate.setMonth(11);
+            break;
+
+        case 'lastYear':
+            sDate.setFullYear(sDate.getFullYear() -1);
+            sDate.setMonth(0);
+            eDate.setFullYear(eDate.getFullYear() -1);
+            eDate.setMonth(11);
+            break;
+    }
+
+    return [sDate, eDate];
+}
+
+/**
+ * Loads Charts
+ * @param opts
+ * @returns {$}
+ */
+$.fn.loadChartJS = function(opts) {
+    $(this).each(function() {
+        var chart = new Chart($(this).get(0), opts);
+        $(this).data('chart', chart);
+    });
+    return this;
+};
