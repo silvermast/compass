@@ -107,7 +107,10 @@
                         <td class="td-input"><input class="form-control" type="date" v-model="task._date"></td>
                         <td class="td-input"><input class="form-control" type="time" v-model="task._time_start"></td>
                         <td class="td-input"><input class="form-control" type="time" v-model="task._time_end"></td>
-                        <td><span class="field-text" v-text="task._elapsed"></span></td>
+                        <td>
+                            <span class="field-text" v-text="task._elapsed" v-if="task._elapsed"></span>
+                            <span class="field-text text-muted" v-text="task._elapsed_est"></span>
+                        </td>
                         <td class="td-button"
                             @click="saveTask(task_i)"
                             :class="{'bg-warning': !task._complete}">

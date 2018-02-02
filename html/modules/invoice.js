@@ -141,9 +141,10 @@ var _vueObj = {
                 StartTime   = this.getDefaultDate();
                 t._complete = false;
             } else if (!t.end_time) { // if end_time not set, assume we're setting to now
-                StartTime   = new Date(t.start_time);
-                EndTime     = this.getDefaultDate();
-                t._complete = false;
+                StartTime      = new Date(t.start_time);
+                EndTime        = this.getDefaultDate();
+                t._complete    = false;
+                t._elapsed_est = timeFormat(Math.floor((EndTime - StartTime) / 1000));
             } else { // calculate elapsed time
                 StartTime    = new Date(t.start_time);
                 EndTime      = new Date(t.end_time);
