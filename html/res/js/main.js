@@ -14,8 +14,8 @@ var routes = {
             }
         });
     },
-    '/dashboard': function() {
-        loadModule('dashboard');
+    '/reports': function() {
+        loadModule('reports');
     },
     '/invoice/v/:invoice_id': function(slug) {
         loadModule('invoice', {slug: slug});
@@ -24,7 +24,7 @@ var routes = {
         loadModule('invoice');
     },
     '/': function() {
-        location.hash = '#/dashboard';
+        location.hash = '#/invoice/new';
     },
 };
 

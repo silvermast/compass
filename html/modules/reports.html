@@ -1,6 +1,4 @@
 <div>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
-
     <x-login-form v-model="user" v-if="!user" />
 
     <template v-else>
@@ -9,7 +7,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-xs-6">
-                    <h1 class="pull-left">Dashboard</h1>
+                    <h1 class="pull-left">Reports</h1>
                     <div class="dropdown pointer pull-left mt-20 pl-20">
                         <span class="btn btn-link text-primary btn-lg dropdown-toggle"
                                 id="statusDropdownButton"
@@ -61,7 +59,17 @@
                     </div>
                 </div>
 
+            </div>
 
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="card h-400">
+                        <h2>Trends</h2>
+                        <x-loader v-if="isBusy" />
+
+                        <canvas id="trends-chart" height="400" style="width:100%"></canvas>
+                    </div>
+                </div>
             </div>
         </div>
 

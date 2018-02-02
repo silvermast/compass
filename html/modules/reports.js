@@ -113,6 +113,54 @@ var _vueObj = {
             var vm = this,
                 $chart = $(vm.$el).find('#total-earnings-chart');
 
+            if ($chart.data('chart')) {
+                $chart.data('chart').destroy();
+                // $chart.empty();
+                // $chart.off();
+            }
+
+            // calculate totals
+            var Totals = objValues(vm.tasks).reduce(function(totals, t) {
+                if (!t.start_time)
+                    return totals;
+
+                if (!totals[t.client])
+                    totals[t.client] = 0;
+                totals[t.client] += vm.getTaskWorth(t);
+
+                return totals;
+            }, {});
+
+            console.log('Rendering pie chart', Totals);
+
+            var labels = objKeys(Totals),
+                colors = labels.map(function(label) {
+                    return '#' + md5(label).substr(4, 6);
+                });
+
+            // chart data object
+            $chart.loadChartJS({
+                type: 'doughnut',
+                data: {
+                    datasets: [{
+                        data: objValues(Totals),
+                        backgroundColor: colors,
+                    }],
+                    labels: labels,
+                },
+                options: {
+                    legend: {display: false},
+                },
+            });
+        },
+
+        /**
+         * Renders a line chart in the "Trends" area
+         */
+        renderLineChart: function() {
+            var vm = this,
+                $chart = $(vm.$el).find('#trends-chart');
+
             if ($chart.data('chart'))
                 $chart.data('chart').clear();
 
@@ -135,7 +183,7 @@ var _vueObj = {
 
             // chart data object
             $chart.loadChartJS({
-                type: 'doughnut',
+                type: 'line',
                 data: {
                     datasets: [{
                         data: objValues(Totals),
@@ -147,6 +195,9 @@ var _vueObj = {
                     legend: {display: false},
                 },
             });
+        },
+
+        renderBarChart: function() {
         },
 
         /**

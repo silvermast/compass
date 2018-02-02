@@ -176,22 +176,21 @@ function dateRangeFromKey(key) {
             break;
 
         case 'lastMonth':
-            sDate.setMonth(-1); // -1 month from start date
-            eDate.setDate(-1); // -1 day from end date
+            sDate.setMonth(sDate.getMonth() - 1); // -1 month from start date
             break;
 
         case 'last3Months':
-            sDate.setMonth(-3);
+            sDate.setMonth(sDate.getMonth() + -3);
             eDate.setDate(-1);
             break;
 
         case 'last6Months':
-            sDate.setMonth(-6);
+            sDate.setMonth(sDate.getMonth() - 6);
             eDate.setDate(-1);
             break;
 
         case 'last12Months':
-            sDate.setMonth(-12);
+            sDate.setMonth(sDate.getMonth() - 12);
             eDate.setDate(-1);
             break;
 
