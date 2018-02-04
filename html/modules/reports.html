@@ -4,9 +4,9 @@
     <template v-else>
         <x-owner-nav selected="dashboard" />
 
-        <div class="container">
+        <div class="container-fluid">
             <div class="row">
-                <div class="col-xs-6">
+                <div class="col-xs-12">
                     <h1 class="pull-left">Reports</h1>
                     <div class="dropdown pointer pull-left mt-20 pl-20">
                         <span class="btn btn-link text-primary btn-lg dropdown-toggle"
@@ -24,27 +24,15 @@
 
                     <br class="clearfix">
                 </div>
-            </div>
 
-            <div class="row">
-
-                <div class="col-md-4 col-sm-12">
-                    <div class="card h-350">
-                        <h2>Breakdown</h2>
-
-                        <x-loader v-if="isBusy" />
-                        <canvas id="total-earnings-chart" width="500" height="400"></canvas>
-                    </div>
-                </div>
-
-                <div class="col-md-4 col-sm-12">
-                    <div class="card h-350">
+                <div class="col-md-3 col-sm-12">
+                    <div class="card">
                         <h2>Aggregates</h2>
 
                         <x-loader v-if="isBusy" />
                         <table class="table">
                             <tr>
-                                <th>Total</th>
+                                <th width="100">Total</th>
                                 <td v-text="'$' + numberFormat(totalEarnings, 2)"></td>
                             </tr>
                             <tr>
@@ -56,13 +44,13 @@
                                 <td v-text="'$' + numberFormat(totalEarnings / totalHours, 2)"></td>
                             </tr>
                         </table>
+
+                        <canvas id="total-earnings-chart" width="500" height="400"></canvas>
                     </div>
+
                 </div>
 
-            </div>
-
-            <div class="row">
-                <div class="col-xs-12">
+                <div class="col-md-9 col-sm-12">
                     <div class="card" style="height: 500px;">
                         <h2>Trends</h2>
                         <x-loader v-if="isBusy" />
@@ -70,6 +58,7 @@
                         <canvas id="trends-chart" height="400" style="width:100%"></canvas>
                     </div>
                 </div>
+
             </div>
         </div>
 
