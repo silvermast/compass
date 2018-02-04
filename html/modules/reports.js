@@ -21,7 +21,7 @@ var _vueObj = {
         totalEarnings: 0,
         totalHours: 0,
     },
-    created: function() {
+    mounted: function() {
         var vm = this;
         Load.chartjs(function() {
             vm.loadTasks();
@@ -87,13 +87,21 @@ var _vueObj = {
                 },
             });
         },
+
+        /**
+         * Renders all report data
+         */
         render: function() {
             this.renderTotalEarnings();
+            this.renderBarChart();
             this.calculateAggregates();
 
             this.isBusy = false;
         },
 
+        /**
+         * Sums up text-based report data
+         */
         calculateAggregates: function() {
             var vm = this;
 
@@ -115,8 +123,6 @@ var _vueObj = {
 
             if ($chart.data('chart')) {
                 $chart.data('chart').destroy();
-                // $chart.empty();
-                // $chart.off();
             }
 
             // calculate totals
@@ -130,8 +136,6 @@ var _vueObj = {
 
                 return totals;
             }, {});
-
-            console.log('Rendering pie chart', Totals);
 
             var labels = objKeys(Totals),
                 colors = labels.map(function(label) {
@@ -157,47 +161,102 @@ var _vueObj = {
         /**
          * Renders a line chart in the "Trends" area
          */
-        renderLineChart: function() {
+        renderBarChart: function() {
             var vm = this,
                 $chart = $(vm.$el).find('#trends-chart');
 
-            if ($chart.data('chart'))
-                $chart.data('chart').clear();
+            if (!$chart.data('chart')) {
+                $chart.loadChartJS({
+                    type: 'bar',
+                    data: {
+                        datasets: [],
+                        labels: [],
+                    },
+                    options: {
+                        legend: {display: false},
+                        responsive: true,
+                        scales: {
+                            xAxes: [{
+                                stacked: true,
+                            }],
+                            yAxes: [{
+                                stacked: true,
+                            }]
+                        }
+                    },
+                    tooltips: {
+                        mode: 'index',
+                        intersect: false
+                    },
+                });
+            }
+
+            var _formatDate,
+                filterDates = dateRangeFromKey(vm.filter.dateRange.value);
+            ;
+            switch (vm.filter.dateRange.value) {
+                case 'thisMonth':
+                case 'lastMonth':
+                    _formatDate = function(date) {
+                        return date.toDateString().split(' ').splice(1,3).join(' ');
+                    };
+
+                    zeroData    = dateRange(filterDates[0], filterDates[1]).reduce(function(result, date) {
+                        var d = _formatDate(date);
+                        result[d] = 0;
+                        return result;
+                    }, {});
+                    break;
+
+                case 'last3Months':
+                case 'last6Months':
+                case 'last12Months':
+                case 'thisYear':
+                case 'lastYear':
+                    _formatDate = function(date) {
+                        return Months[date.getMonth()];
+                    };
+                    zeroData = dateRange(filterDates[0], filterDates[1], 'month').reduce(function(result, date) {
+                        var d = _formatDate(date);
+                        result[d] = 0;
+                        return result;
+                    }, {});
+                    break;
+            }
 
             // calculate totals
-            var Totals = objValues(vm.tasks).reduce(function(totals, t) {
+            var DataSets = objValues(vm.tasks).reduce(function(totals, t) {
                 if (!t.start_time)
                     return totals;
 
-                if (!totals[t.client])
-                    totals[t.client] = 0;
-                totals[t.client] += vm.getTaskWorth(t);
+                if (!totals[t.client]) {
+                    totals[t.client] = {
+                        label: t.client,
+                        backgroundColor: strToColor(t.client),
+                        data: clone(zeroData),
+                    };
+                }
+
+                // Aggregate data points
+                var task_date = _formatDate(t._start);
+
+                if (!totals[t.client].data[task_date])
+                    totals[t.client].data[task_date] = 0;
+
+                totals[t.client].data[task_date] += vm.getTaskWorth(t);
 
                 return totals;
             }, {});
 
-            var labels = objKeys(Totals),
-                colors = labels.map(function(label) {
-                    return '#' + md5(label).substr(4, 6);
-                });
+            $chart.data('chart').data = {
+                datasets: objValues(DataSets).map(function(set) {
+                    set.data = objValues(set.data);
+                    return set;
+                }),
+                labels: objKeys(zeroData),
+            };
+            $chart.data('chart').update();
 
-            // chart data object
-            $chart.loadChartJS({
-                type: 'line',
-                data: {
-                    datasets: [{
-                        data: objValues(Totals),
-                        backgroundColor: colors,
-                    }],
-                    labels: labels,
-                },
-                options: {
-                    legend: {display: false},
-                },
-            });
-        },
-
-        renderBarChart: function() {
         },
 
         /**

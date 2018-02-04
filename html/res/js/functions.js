@@ -151,6 +151,29 @@ function timeFormat(seconds) {
     return res.trim() || '0s';
 }
 
+/** Used in global scope */
+var Months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+/**
+ * Generates an array of dates based on a start and end date
+ * @param start
+ * @param end
+ * @param step
+ * @returns {Array}
+ */
+function dateRange(start, end, step) {
+    range = [];
+    while (start <= end) {
+        range.push(new Date(start));
+        if (step === 'month') {
+            start.setMonth(start.getMonth() + 1);
+        } else {
+            start.setDate(start.getDate() + 1)
+        }
+    }
+    return range;
+}
+
 /**
  * generates two dates from a report date struct key
  * @param key
@@ -165,33 +188,34 @@ function dateRangeFromKey(key) {
     sDate.setMinutes(0);
     sDate.setSeconds(0);
     eDate.setDate(1); // use first of month
-    sDate.setHours(23);
-    sDate.setMinutes(59);
-    sDate.setSeconds(59);
+    eDate.setHours(23);
+    eDate.setMinutes(59);
+    eDate.setSeconds(59);
 
     switch (key) {
         case 'thisMonth':
             eDate.setMonth(eDate.getMonth() + 1); // set to first day next month
-            eDate.setDate(-1); // subtract 1 day
+            eDate.setDate(0); // subtract 1 day
             break;
 
         case 'lastMonth':
             sDate.setMonth(sDate.getMonth() - 1); // -1 month from start date
+            eDate.setDate(0);
             break;
 
         case 'last3Months':
             sDate.setMonth(sDate.getMonth() + -3);
-            eDate.setDate(-1);
+            eDate.setDate(0);
             break;
 
         case 'last6Months':
             sDate.setMonth(sDate.getMonth() - 6);
-            eDate.setDate(-1);
+            eDate.setDate(0);
             break;
 
         case 'last12Months':
             sDate.setMonth(sDate.getMonth() - 12);
-            eDate.setDate(-1);
+            eDate.setDate(0);
             break;
 
         case 'thisYear':
@@ -206,8 +230,13 @@ function dateRangeFromKey(key) {
             eDate.setMonth(11);
             break;
     }
+    console.log(key, ' | ', sDate, ' | ', eDate);
 
     return [sDate, eDate];
+}
+
+function strToColor(label) {
+    return '#' + md5(label).substr(4, 6);
 }
 
 /**
