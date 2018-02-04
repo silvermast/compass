@@ -21,7 +21,7 @@ var _vueObj = {
         totalEarnings: 0,
         totalHours: 0,
     },
-    mounted: function() {
+    created: function() {
         var vm = this;
         Load.chartjs(function() {
             vm.loadTasks();
@@ -121,12 +121,22 @@ var _vueObj = {
             var vm = this,
                 $chart = $(vm.$el).find('#total-earnings-chart');
 
-            if ($chart.data('chart')) {
-                $chart.data('chart').destroy();
+            if (!$chart.data('chart')) {
+                // chart data object
+                $chart.loadChartJS({
+                    type: 'doughnut',
+                    data: {
+                        datasets: [],
+                        labels: {},
+                    },
+                    options: {
+                        legend: {display: false},
+                    },
+                });
             }
 
             // calculate totals
-            var Totals = objValues(vm.tasks).reduce(function(totals, t) {
+            var DataSets = objValues(vm.tasks).reduce(function(totals, t) {
                 if (!t.start_time)
                     return totals;
 
@@ -137,25 +147,19 @@ var _vueObj = {
                 return totals;
             }, {});
 
-            var labels = objKeys(Totals),
+            var labels = objKeys(DataSets),
                 colors = labels.map(function(label) {
                     return '#' + md5(label).substr(4, 6);
                 });
 
-            // chart data object
-            $chart.loadChartJS({
-                type: 'doughnut',
-                data: {
-                    datasets: [{
-                        data: objValues(Totals),
-                        backgroundColor: colors,
-                    }],
-                    labels: labels,
-                },
-                options: {
-                    legend: {display: false},
-                },
-            });
+            $chart.data('chart').data = {
+                datasets: [{
+                    data: objValues(DataSets),
+                    backgroundColor: colors,
+                }],
+                labels: labels
+            };
+            $chart.data('chart').update();
         },
 
         /**

@@ -23,7 +23,7 @@ var Load = {
     _css: {},
 
     javascript: function(script, donefn) {
-        if (this._js[script]) return;
+        if (this._js[script]) return donefn();
         this._js[script] = true;
         $.getScript(script, donefn);
     },
@@ -230,7 +230,6 @@ function dateRangeFromKey(key) {
             eDate.setMonth(11);
             break;
     }
-    console.log(key, ' | ', sDate, ' | ', eDate);
 
     return [sDate, eDate];
 }
