@@ -26,6 +26,6 @@ switch ($user->perm_level) {
         Response::init('Invalid User', 401)->send();
 }
 
-$results = array_values(Task::findMulti($_REQUEST, ['sort' => ['start_time' => -1]]));
+$results = array_values(Task::findMulti($_REQUEST, ['sort' => ['start_time' => -1, 'task_id' => -1]]));
 
 Response::init($results)->send();

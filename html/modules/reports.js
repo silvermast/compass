@@ -10,8 +10,8 @@ var _vueObj = {
                     last3Months: 'Last 3 Months',
                     last6Months: 'Last 6 Months',
                     last12Months: 'Last 12 Months',
-                    thisYear: new Date().getUTCFullYear(),
-                    lastYear: new Date().getUTCFullYear() - 1,
+                    thisYear: moment().year(),
+                    lastYear: moment().year() - 1,
                 },
             },
         },
@@ -148,9 +148,7 @@ var _vueObj = {
             }, {});
 
             var labels = objKeys(DataSets),
-                colors = labels.map(function(label) {
-                    return '#' + md5(label).substr(4, 6);
-                });
+                colors = labels.map(strToColor);
 
             $chart.data('chart').data = {
                 datasets: [{
@@ -180,12 +178,8 @@ var _vueObj = {
                         legend: {display: false},
                         responsive: true,
                         scales: {
-                            xAxes: [{
-                                stacked: true,
-                            }],
-                            yAxes: [{
-                                stacked: true,
-                            }]
+                            xAxes: [{stacked: true}],
+                            yAxes: [{stacked: true}],
                         }
                     },
                     tooltips: {
@@ -195,19 +189,15 @@ var _vueObj = {
                 });
             }
 
-            var _formatDate,
+            var _dateFormat,
                 filterDates = dateRangeFromKey(vm.filter.dateRange.value);
-            ;
+
             switch (vm.filter.dateRange.value) {
                 case 'thisMonth':
                 case 'lastMonth':
-                    _formatDate = function(date) {
-                        return date.toDateString().split(' ').splice(1,3).join(' ');
-                    };
-
+                    _dateFormat = 'MMM D, YYYY';
                     zeroData    = dateRange(filterDates[0], filterDates[1]).reduce(function(result, date) {
-                        var d = _formatDate(date);
-                        result[d] = 0;
+                        result[date.format(_dateFormat)] = 0;
                         return result;
                     }, {});
                     break;
@@ -217,12 +207,9 @@ var _vueObj = {
                 case 'last12Months':
                 case 'thisYear':
                 case 'lastYear':
-                    _formatDate = function(date) {
-                        return Months[date.getMonth()];
-                    };
+                    _dateFormat = 'MMMM YYYY';
                     zeroData = dateRange(filterDates[0], filterDates[1], 'month').reduce(function(result, date) {
-                        var d = _formatDate(date);
-                        result[d] = 0;
+                        result[date.format(_dateFormat)] = 0;
                         return result;
                     }, {});
                     break;
@@ -242,7 +229,7 @@ var _vueObj = {
                 }
 
                 // Aggregate data points
-                var task_date = _formatDate(t._start);
+                var task_date = t._start.format(_dateFormat);
 
                 if (!totals[t.client].data[task_date])
                     totals[t.client].data[task_date] = 0;
@@ -272,9 +259,9 @@ var _vueObj = {
             var vm = this;
 
             if (!t._start && t.start_time)
-                t._start = new Date(t.start_time);
+                t._start = moment(t.start_time);
             if (!t._end && t.end_time)
-                t._end = new Date(t.end_time);
+                t._end = moment(t.end_time);
             if (!t._elapsed_h && t.end_time && t.start_time)
                 t._elapsed_h = (t._end - t._start) / 3600000;
 

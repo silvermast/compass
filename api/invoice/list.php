@@ -26,6 +26,6 @@ switch ($user->perm_level) {
         Response::init('Invalid User', 401)->send();
 }
 
-$results = array_values(Invoice::findMulti($_REQUEST, ['sort' => ['status' => 1, 'date_added' => -1]]));
+$results = array_values(Invoice::findMulti($_REQUEST, ['sort' => ['status' => 1, 'date_added' => -1, 'invoice_id' => -1]]));
 
 Response::init($results)->send();

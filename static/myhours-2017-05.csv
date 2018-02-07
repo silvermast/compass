@@ -1,0 +1,37 @@
+﻿Date;Team member;Client;Project;Task;Start;Finish;Duration;Billable;Rate;Amount;AdditionalAmount;Note;ApprovalStatus;Invoiced
+05/19/2017;Jason;AWAYN;AWAYN Website;Move Github Repo;11:00 AM;11:20 AM;0:20:00;TRUE;35.00;11.67;0.00;Pulled down repositories into local environment, familiarized with basic setup;;FALSE
+05/19/2017;Jason;AWAYN;AWAYN Website;Move Github Repo;11:20 AM;11:40 AM;0:20:00;TRUE;35.00;11.67;0.00;Add Jason's Public Key to authorized keys;;FALSE
+05/19/2017;Jason;AWAYN;AWAYN Website;Move Github Repo;11:40 AM;11:50 AM;0:10:00;TRUE;35.00;5.83;0.00;Pulled down updates and committed to new repository;;FALSE
+05/19/2017;Jason;AWAYN;AWAYN Website;Move Github Repo;11:50 AM;12:00 PM;0:10:00;TRUE;35.00;5.83;0.00;Updated repositories on server to reflect new github repo;;FALSE
+05/22/2017;Jason;Ivio;CLIN;CLIN-259;8:00 AM;9:00 AM;1:00:00;TRUE;50.00;50.00;0.00;Sprint 37;;FALSE
+05/22/2017;Jason;AWAYN;AWAYN Website;FacetWP Proximity;8:00 AM;8:30 AM;0:30:00;TRUE;35.00;17.50;0.00;;;FALSE
+05/22/2017;Jason;AWAYN;AWAYN Website;FacetWP Proximity;9:00 AM;9:30 AM;0:30:00;TRUE;35.00;17.50;0.00;Pushed code live;;FALSE
+05/22/2017;Jason;AWAYN;AWAYN Website;Amazon Packing List;10:30 AM;12:30 PM;2:00:00;TRUE;35.00;70.00;0.00;;;FALSE
+05/22/2017;Jason;AWAYN;AWAYN Website;Amazon Packing List;1:00 PM;5:00 PM;4:00:00;TRUE;35.00;140.00;0.00;;;FALSE
+05/23/2017;Jason;AWAYN;AWAYN Website;Update Listable Theme;9:30 AM;10:00 AM;0:30:00;TRUE;35.00;17.50;0.00;;;FALSE
+05/23/2017;Jason;AWAYN;AWAYN Website;Update Bookmark & Review SVG;1:00 PM;1:30 PM;0:30:00;TRUE;35.00;17.50;0.00;;;FALSE
+05/23/2017;Jason;AWAYN;AWAYN Website;Add User Avatar to Listings;2:00 PM;3:00 PM;1:00:00;TRUE;35.00;35.00;0.00;;;FALSE
+05/23/2017;Jason;AWAYN;AWAYN Website;/author/ redirect issue;5:00 PM;6:00 PM;1:00:00;TRUE;35.00;35.00;0.00;;;FALSE
+05/24/2017;Jason;Ivio;AAR;Ramco API Update;8:15 AM;10:15 AM;2:00:00;TRUE;50.00;100.00;0.00;;;FALSE
+05/24/2017;Jason;AWAYN;AWAYN Website;Add User Avatar to Listings;12:15 PM;12:30 PM;0:15:00;TRUE;35.00;8.75;0.00;CSS update;;FALSE
+05/24/2017;Jason;AWAYN;AWAYN Website;Add Featured Image hook to functions.php;1:45 PM;2:00 PM;0:15:00;TRUE;35.00;8.75;0.00;;;FALSE
+05/24/2017;Jason;AWAYN;AWAYN Website;Add social media icon colors;3:30 PM;4:00 PM;0:30:00;TRUE;35.00;17.50;0.00;;;FALSE
+05/25/2017;Jason;AWAYN;AWAYN Website;add-listing map autocomplete;8:45 AM;10:00 AM;1:15:00;TRUE;35.00;43.75;0.00;;;FALSE
+05/25/2017;Jason;AWAYN;AWAYN Website;Update Password Reset Email;10:00 AM;10:30 AM;0:30:00;TRUE;35.00;17.50;0.00;;;FALSE
+05/25/2017;Jason;AWAYN;AWAYN Website;Edit Profile: add bio;11:00 AM;12:30 PM;1:30:00;TRUE;35.00;52.50;0.00;;;FALSE
+05/25/2017;Jason;AWAYN;AWAYN Website;Bug: When editing Listings, images are deleted.;2:30 PM;3:15 PM;0:45:00;TRUE;35.00;26.25;0.00;;;FALSE
+05/25/2017;Jason;AWAYN;AWAYN Website;Bug: When editing Listings, images are deleted.;4:00 PM;4:30 PM;0:30:00;TRUE;35.00;17.50;0.00;;;FALSE
+05/26/2017;Jason;AWAYN;AWAYN Website;FacetWP Proximity;8:00 AM;8:15 AM;0:15:00;TRUE;35.00;8.75;0.00;;;FALSE
+05/26/2017;Jason;AWAYN;AWAYN Website;Update Listable Theme;8:15 AM;8:45 AM;0:30:00;TRUE;35.00;17.50;0.00;Updated to 1.8.7. Had to manually upload.;;FALSE
+05/26/2017;Jason;Ivio;CLIN;CLIN-260 (PTO Updates);11:15 AM;11:45 AM;0:30:00;TRUE;50.00;25.00;0.00;;;FALSE
+05/26/2017;Jason;Ivio;CLIN;CLIN-261 (inventory permissions);11:45 AM;12:00 PM;0:15:00;TRUE;50.00;12.50;0.00;;;FALSE
+05/26/2017;Jason;Ivio;CLIN;CLIN-262 (Time Tracking);1:00 PM;2:00 PM;1:00:00;TRUE;50.00;50.00;0.00;;;FALSE
+05/29/2017;Jason;Ivio;CLIN;CLIN-262 (Time Tracking);8:30 AM;9:30 AM;1:00:00;TRUE;50.00;50.00;0.00;;;FALSE
+05/29/2017;Jason;AWAYN;AWAYN Website;Marketplace v1;11:30 AM;11:45 AM;0:15:00;TRUE;35.00;8.75;0.00;;;FALSE
+05/29/2017;Jason;AWAYN;AWAYN Website;Marketplace v1;12:15 PM;4:00 PM;3:45:00;TRUE;35.00;131.25;0.00;;;FALSE
+05/30/2017;Jason;AWAYN;AWAYN Website;Marketplace v1;7:30 AM;8:45 AM;1:15:00;TRUE;35.00;43.75;0.00;;;FALSE
+05/30/2017;Jason;AWAYN;AWAYN Website;Marketplace v1;9:15 AM;11:45 AM;2:30:00;TRUE;35.00;87.50;0.00;;;FALSE
+05/30/2017;Jason;AWAYN;AWAYN Website;Marketplace v1;1:15 PM;4:30 PM;3:15:00;TRUE;35.00;113.75;0.00;;;FALSE
+05/31/2017;Jason;AWAYN;AWAYN Website;Marketplace v1;7:30 AM;12:00 PM;4:30:00;TRUE;35.00;157.50;0.00;;;FALSE
+05/31/2017;Jason;AWAYN;AWAYN Website;Marketplace v1;1:30 PM;2:30 PM;1:00:00;TRUE;35.00;35.00;0.00;;;FALSE
+05/31/2017;Jason;AWAYN;AWAYN Website;Marketplace v1;4:00 PM;6:30 PM;2:30:00;TRUE;35.00;87.50;0.00;;;FALSE

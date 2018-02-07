@@ -124,10 +124,10 @@ var _vueObj = {
          * @returns {Date}
          */
         getDefaultDate: function() {
-            var d = new Date();
-            d.setSeconds(0);
-            d.setMinutes(Math.round(d.getMinutes() / 15) * 15);
-            return d;
+            var m = moment();
+            m.second(0)
+            m.minute(Math.round(m.minute() / 15) * 15);
+            return m;
         },
 
         /**
@@ -141,13 +141,13 @@ var _vueObj = {
                 StartTime   = this.getDefaultDate();
                 t._complete = false;
             } else if (!t.end_time) { // if end_time not set, assume we're setting to now
-                StartTime      = new Date(t.start_time);
+                StartTime      = moment(t.start_time);
                 EndTime        = this.getDefaultDate();
                 t._complete    = false;
                 t._elapsed_est = timeFormat(Math.floor((EndTime - StartTime) / 1000));
             } else { // calculate elapsed time
-                StartTime    = new Date(t.start_time);
-                EndTime      = new Date(t.end_time);
+                StartTime    = moment(t.start_time);
+                EndTime      = moment(t.end_time);
                 t._elapsed   = timeFormat(Math.floor((EndTime - StartTime) / 1000));
                 t._elapsed_h = (EndTime - StartTime) / 3600000;
                 t._complete  = true;
@@ -156,11 +156,11 @@ var _vueObj = {
             if (!t.task_id)
                 t._complete = false;
 
-            t._date = StartTime.toISOString().split('T')[0];
-            t._time_start = getTimeString(StartTime);
+            t._date = StartTime.format('YYYY-MM-DD');
+            t._time_start = StartTime.format('HH:mm');
 
             if (EndTime)
-                t._time_end = getTimeString(EndTime);
+                t._time_end = EndTime.format('HH:mm');
 
             return t;
         },

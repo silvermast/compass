@@ -86,19 +86,6 @@ function objKeys(obj) {
     return Object.keys(obj);
 }
 
-function generateColors(num) {
-    return [
-        '#0032eb',
-        '#ff3969',
-        '#ffce56',
-        '#cc65fe',
-        '#36a2eb',
-        '#39d344',
-        '#ff6384',
-        '#6c65fe',
-    ].splice(0, num || 1);
-}
-
 /**
  *
  * @param obj
@@ -113,13 +100,6 @@ function objValues(obj) {
             arr.push(obj[i]);
         return arr;
     }
-}
-
-function getTimeString(date) {
-    return [
-        ('00' + date.getHours()).substr(-2),
-        ('00' + date.getMinutes()).substr(-2)
-    ].join(':');
 }
 
 function timeFormat(seconds) {
@@ -151,9 +131,6 @@ function timeFormat(seconds) {
     return res.trim() || '0s';
 }
 
-/** Used in global scope */
-var Months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-
 /**
  * Generates an array of dates based on a start and end date
  * @param start
@@ -164,11 +141,11 @@ var Months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'A
 function dateRange(start, end, step) {
     range = [];
     while (start <= end) {
-        range.push(new Date(start));
+        range.push(moment(start));
         if (step === 'month') {
-            start.setMonth(start.getMonth() + 1);
+            start.add(1, 'month');
         } else {
-            start.setDate(start.getDate() + 1)
+            start.add(1, 'day');
         }
     }
     return range;
@@ -180,54 +157,43 @@ function dateRange(start, end, step) {
  * @returns {[Date,Date]}
  */
 function dateRangeFromKey(key) {
-    var sDate = new Date();
-    var eDate = new Date();
-
-    sDate.setDate(1); // use first of month
-    sDate.setHours(0);
-    sDate.setMinutes(0);
-    sDate.setSeconds(0);
-    eDate.setDate(1); // use first of month
-    eDate.setHours(23);
-    eDate.setMinutes(59);
-    eDate.setSeconds(59);
+    var sDate = moment();
+    var eDate = moment();
 
     switch (key) {
         case 'thisMonth':
-            eDate.setMonth(eDate.getMonth() + 1); // set to first day next month
-            eDate.setDate(0); // subtract 1 day
+            sDate.startOf('month');
+            eDate.endOf('month');
             break;
 
         case 'lastMonth':
-            sDate.setMonth(sDate.getMonth() - 1); // -1 month from start date
-            eDate.setDate(0);
+            sDate.subtract(1, 'month').startOf('month');
+            eDate.subtract(1, 'month').endOf('month');
             break;
 
         case 'last3Months':
-            sDate.setMonth(sDate.getMonth() + -3);
-            eDate.setDate(0);
+            sDate.subtract(3, 'month').startOf('month');
+            eDate.subtract(1, 'month').endOf('month');
             break;
 
         case 'last6Months':
-            sDate.setMonth(sDate.getMonth() - 6);
-            eDate.setDate(0);
+            sDate.subtract(6, 'month').startOf('month');
+            eDate.subtract(1, 'month').endOf('month');
             break;
 
         case 'last12Months':
-            sDate.setMonth(sDate.getMonth() - 12);
-            eDate.setDate(0);
+            sDate.subtract(12, 'month').startOf('month');
+            eDate.subtract(1, 'month').endOf('month');
             break;
 
         case 'thisYear':
-            sDate.setMonth(0);
-            eDate.setMonth(11);
+            sDate.startOf('year');
+            eDate.endOf('year');
             break;
 
         case 'lastYear':
-            sDate.setFullYear(sDate.getFullYear() -1);
-            sDate.setMonth(0);
-            eDate.setFullYear(eDate.getFullYear() -1);
-            eDate.setMonth(11);
+            sDate.subtract(1, 'year').startOf('year');
+            eDate.subtract(1, 'year').endOf('year');
             break;
     }
 
@@ -235,8 +201,21 @@ function dateRangeFromKey(key) {
 }
 
 function strToColor(label) {
+
     return '#' + md5(label).substr(4, 6);
 }
+// function strToColor(str) {
+//     var hash = 0;
+//     for (var i = 0; i < str.length; i++) {
+//         hash = str.charCodeAt(i) + ((hash << 5) - hash);
+//     }
+//     var colour = '#';
+//     for (var i = 0; i < 3; i++) {
+//         var value = (hash >> (i * 8)) & 0xFF;
+//         colour += ('00' + value.toString(16)).substr(-2);
+//     }
+//     return colour;
+// }
 
 /**
  * Loads Charts
