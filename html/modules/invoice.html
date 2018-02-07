@@ -105,8 +105,8 @@
                         <td class="td-input"><input class="form-control" type="text" v-model="task.title"></td>
                         <td class="td-input"><input class="form-control" type="text" v-model="task.notes"></td>
                         <td class="td-input"><input class="form-control" type="date" v-model="task._date"></td>
-                        <td class="td-input"><input class="form-control" type="time" v-model="task._time_start"></td>
-                        <td class="td-input"><input class="form-control" type="time" v-model="task._time_end"></td>
+                        <td class="td-input"><input class="form-control" :class="{'text-muted': !task._time_start_valid}" type="time" v-model="task._time_start"></td>
+                        <td class="td-input"><input class="form-control" :class="{'text-muted': !task._time_end_valid}" type="time" v-model="task._time_end"></td>
                         <td>
                             <span class="field-text" v-text="task._elapsed" v-if="task._elapsed"></span>
                             <span class="field-text text-muted" v-text="task._elapsed_est"></span>

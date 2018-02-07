@@ -172,6 +172,10 @@ textarea.form-control {
     border: 0;
 }
 
+.form-control.text-muted {
+    color: #b4bcc2;
+}
+
 .under-label {
     font-size: 0.9em;
     padding-left: 0.9rem;

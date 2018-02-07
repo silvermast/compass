@@ -20,10 +20,10 @@ var _vueObj = {
 
         // update the default date every minute for unfinished tasks
         setInterval(function() {
-            if (vm.tasks && vm.tasks.length)
+            if (vm.tasks && vm.tasks.length && $('.td-input input:focus', vm.$el).length === 0)
                 vm.tasks = vm.tasks.map(vm.formatTask);
 
-        }, 60000);
+        }, 10000);
     },
     watch: {
         "params.slug": function() {
@@ -125,8 +125,9 @@ var _vueObj = {
          */
         getDefaultDate: function() {
             var m = moment();
-            m.second(0)
+            m.second(0);
             m.minute(Math.round(m.minute() / 15) * 15);
+            console.log(m);
             return m;
         },
 
@@ -136,18 +137,24 @@ var _vueObj = {
          * @returns {*}
          */
         formatTask: function(t) {
-            var StartTime, EndTime;
-            if (!t.start_time) { // if start_time not set, assume we're setting to now
-                StartTime   = this.getDefaultDate();
+            var vm        = this;
+            var StartTime = moment(t.start_time || '0000-00-00');
+            var EndTime   = moment(t.end_time || '0000-00-00');
+
+            console.log(StartTime.format(), EndTime.format());
+
+            t._time_start_valid = StartTime.isValid();
+            t._time_end_valid   = EndTime.isValid();
+
+            if (!StartTime.isValid()) { // if start_time not set, assume we're setting to now
+                console.log(StartTime);
+                StartTime   = vm.getDefaultDate();
                 t._complete = false;
-            } else if (!t.end_time) { // if end_time not set, assume we're setting to now
-                StartTime      = moment(t.start_time);
-                EndTime        = this.getDefaultDate();
+            } else if (!EndTime.isValid()) { // if end_time not set, assume we're setting to now
+                EndTime        = vm.getDefaultDate();
                 t._complete    = false;
                 t._elapsed_est = timeFormat(Math.floor((EndTime - StartTime) / 1000));
             } else { // calculate elapsed time
-                StartTime    = moment(t.start_time);
-                EndTime      = moment(t.end_time);
                 t._elapsed   = timeFormat(Math.floor((EndTime - StartTime) / 1000));
                 t._elapsed_h = (EndTime - StartTime) / 3600000;
                 t._complete  = true;
@@ -159,7 +166,7 @@ var _vueObj = {
             t._date = StartTime.format('YYYY-MM-DD');
             t._time_start = StartTime.format('HH:mm');
 
-            if (EndTime)
+            if (EndTime.isValid())
                 t._time_end = EndTime.format('HH:mm');
 
             return t;
@@ -199,10 +206,9 @@ var _vueObj = {
                 return;
 
             var tData = clone(vm.tasks[task_i]);
-            tData.start_time = tData._date + 'T' + tData._time_start + ':00';
 
-            if (tData._time_end)
-                tData.end_time = tData._date + 'T' + tData._time_end + ':00';
+            tData.start_time = tData._time_start ? (tData._date + 'T' + tData._time_start + ':00') : null;
+            tData.end_time   = tData._time_end ? tData._date + 'T' + tData._time_end + ':00' : null;
 
             tData.invoice_id    = vm.invoice.invoice_id;
             tData.invoice_title = vm.invoice.invoice_title;
