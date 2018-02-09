@@ -7,7 +7,7 @@ var _vueObj = {
         index: {
             in_progress: [],
             sent: [],
-            paid: [],
+            // paid: [],
         },
         invoice: {},
         tasks: [],
@@ -48,6 +48,7 @@ var _vueObj = {
             $.get({
                 dataType: 'json',
                 url: '/api/invoice/list',
+                data: {status: {$in: objKeys(vm.index)}},
                 success: function(result) {
 
                     var index = {

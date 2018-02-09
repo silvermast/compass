@@ -106,7 +106,7 @@ var _vueObj = {
             var vm = this;
 
             vm.totalEarnings = objValues(vm.tasks).reduce(function(total, t) {
-                return total + vm.getTaskWorth(t);
+                return total + vm.getTaskHours(t);
             }, 0);
 
             vm.totalHours = objValues(vm.tasks).reduce(function(total, t) {
@@ -142,7 +142,7 @@ var _vueObj = {
 
                 if (!totals[t.client])
                     totals[t.client] = 0;
-                totals[t.client] += vm.getTaskWorth(t);
+                totals[t.client] += vm.getTaskHours(t);
 
                 return totals;
             }, {});
@@ -234,7 +234,7 @@ var _vueObj = {
                 if (!totals[t.client].data[task_date])
                     totals[t.client].data[task_date] = 0;
 
-                totals[t.client].data[task_date] += vm.getTaskWorth(t);
+                totals[t.client].data[task_date] += vm.getTaskHours(t);
 
                 return totals;
             }, {});
@@ -272,7 +272,7 @@ var _vueObj = {
          * @param t
          * @return Number
          */
-        getTaskWorth: function(t) {
+        getTaskHours: function(t) {
             var vm = this;
             t = vm.formatTask(t);
 
