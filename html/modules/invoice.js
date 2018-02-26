@@ -16,7 +16,6 @@ var _vueObj = {
         var vm = this;
         vm.loadIndex();
         vm.loadInvoice();
-        vm.loadTasks();
 
         // update the default date every minute for unfinished tasks
         setInterval(function() {
@@ -80,7 +79,6 @@ var _vueObj = {
                 dataType: 'json',
                 url: '/api/invoice/get?slug=' + vm.params.slug,
                 success: function(result) {
-                    vm.alerts   = {};
                     result.rate = parseInt(result.rate);
                     vm.invoice  = result;
                     vm.invoice._is_locked = vm.invoice.status !== 'in_progress';
@@ -128,7 +126,6 @@ var _vueObj = {
             var m = moment();
             m.second(0);
             m.minute(Math.round(m.minute() / 15) * 15);
-            console.log(m);
             return m;
         },
 
@@ -142,13 +139,10 @@ var _vueObj = {
             var StartTime = moment(t.start_time || '0000-00-00');
             var EndTime   = moment(t.end_time || '0000-00-00');
 
-            console.log(StartTime.format(), EndTime.format());
-
             t._time_start_valid = StartTime.isValid();
             t._time_end_valid   = EndTime.isValid();
 
             if (!StartTime.isValid()) { // if start_time not set, assume we're setting to now
-                console.log(StartTime);
                 StartTime   = vm.getDefaultDate();
                 t._complete = false;
             } else if (!EndTime.isValid()) { // if end_time not set, assume we're setting to now

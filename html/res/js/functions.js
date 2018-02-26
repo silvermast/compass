@@ -204,6 +204,10 @@ function strToColor(label) {
     return '#' + md5(label).substr(4, 6);
 }
 
+$(document).on('click', '[data-toggle=visible]', function(e) {
+    $($(this).data('target')).toggle();
+});
+
 /**
  * Loads Charts
  * @param opts

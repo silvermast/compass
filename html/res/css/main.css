@@ -250,6 +250,13 @@ a, a:hover {
     box-shadow: 0 1px 5px #cccccc;
 }
 
+.card.list-group {
+    padding: 0;
+}
+.card.list-group .list-group-item {
+    border-radius: 0;
+}
+
 tr[href]:hover {
     background-color: #fafafa;
 }
