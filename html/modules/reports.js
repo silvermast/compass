@@ -106,11 +106,11 @@ var _vueObj = {
             var vm = this;
 
             vm.totalEarnings = objValues(vm.tasks).reduce(function(total, t) {
-                return total + vm.getTaskHours(t);
+                return total + (vm.getTaskHours(t) * parseInt(vm.invoices[t.invoice_id].rate || 0));
             }, 0);
 
             vm.totalHours = objValues(vm.tasks).reduce(function(total, t) {
-                return total + (t._elapsed_h || 0);
+                return total + vm.getTaskHours(t);
             }, 0);
         },
 
@@ -286,10 +286,7 @@ var _vueObj = {
             else if (!invoice.rate.toFixed)
                 invoice.rate = parseFloat(invoice.rate);
 
-            if (!t._worth)
-                t._worth = t._elapsed_h * invoice.rate;
-
-            return t._worth;
+            return t._elapsed_h;
         },
 
     },
