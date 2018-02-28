@@ -47,8 +47,10 @@ class User extends core\Model {
     }
 
     public function authenticate() {
-        if (!session_id())
+        if (!session_id()) {
             session_start();
+            core\Debug::info("Starting Session " . session_id());
+        }
 
         $_SESSION['user_id'] = $this->user_id;
     }
@@ -58,13 +60,19 @@ class User extends core\Model {
      * @return User|null
      */
     public static function me() {
-        return new self(); /* @todo implement login */
+        if (!session_id()) {
+            session_start();
+            core\Debug::info("Starting Session " . session_id());
+        }
 
-        if (!isset($_SESSION['user_id']))
+        if (!isset($_SESSION['user_id'])) {
+            core\Debug::info("_SESSION[user_id] not set for sessoin " . session_id());
             return null;
+        }
 
-        if (!self::$_me instanceof self)
-            self::$_me = self::findOne(['id' => $_SESSION['user_id']]);
+        if (!self::$_me instanceof self) {
+            self::$_me = self::findOne(['user_id' => $_SESSION['user_id']]);
+        }
 
         return self::$_me;
     }
