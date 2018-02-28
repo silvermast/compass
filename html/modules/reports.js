@@ -106,11 +106,14 @@ var _vueObj = {
             var vm = this;
 
             vm.totalEarnings = objValues(vm.tasks).reduce(function(total, t) {
-                return total + (vm.getTaskHours(t) * parseInt(vm.invoices[t.invoice_id].rate || 0));
+                if (!t.invoice_id || !vm.invoices[t.invoice_id] || !vm.invoices[t.invoice_id].rate)
+                    return total;
+
+                return total + (vm.getTaskHours(t) * parseInt(vm.invoices[t.invoice_id].rate));
             }, 0);
 
             vm.totalHours = objValues(vm.tasks).reduce(function(total, t) {
-                return total + vm.getTaskHours(t);
+                return total + (vm.getTaskHours(t) || 0);
             }, 0);
         },
 
@@ -276,15 +279,8 @@ var _vueObj = {
             var vm = this;
             t = vm.formatTask(t);
 
-            if (!t.start_time || !t.end_time || !t.invoice_id || !vm.invoices[t.invoice_id])
+            if (!t.start_time || !t.end_time)
                 return 0;
-
-            var invoice = vm.invoices[t.invoice_id];
-
-            if (!invoice.rate)
-                return 0;
-            else if (!invoice.rate.toFixed)
-                invoice.rate = parseFloat(invoice.rate);
 
             return t._elapsed_h;
         },
