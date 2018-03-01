@@ -1,5 +1,6 @@
 <?php
 namespace core\api;
+use models\User;
 
 /**
  * Request class responsible for pulling POST data and sending a response
@@ -19,6 +20,14 @@ class Response {
      */
     public static function init($data, $code = 200) {
         return new self($data, $code);
+    }
+
+    /**
+     * Checks authentication
+     */
+    public static function checkAuth() {
+        if (!$user = User::me())
+            self::init("Please log in", 401)->send();
     }
 
     /**

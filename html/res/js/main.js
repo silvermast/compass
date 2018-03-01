@@ -151,7 +151,7 @@ Vue.component('x-login-form', {
                     Alerts.success("Successfully logged in.", {layout: 'topRight', timeout: 1000});
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
-                    Alerts.error(jqXHR.responseText, {layout: 'topCenter'});
+                    console.error(jqXHR.responseText);
                 }
             });
 
