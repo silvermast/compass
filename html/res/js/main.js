@@ -30,9 +30,18 @@ var routes = {
 /**
  * Route the request
  */
-var router = new Router(routes);
+var router = new Router(routes).configure({
+    notfound: function() {
+        console.log('Page Not Found');
+        location.hash = '#/';
+        loadModule('/');
+    },
+});
 router.init();
 
+/**
+ * @type {{alert: Alerts.alert, success: Alerts.success, error: Alerts.error, warning: Alerts.warning, info: Alerts.info}}
+ */
 var Alerts = {
     alert: function(obj) {
         new Noty(obj).show();
@@ -209,7 +218,14 @@ Vue.mixin({
             }
         }
     },
-
+    watch: {
+        user: function(newVal) {
+            newVal && this.init && this.init();
+        }
+    },
+    created: function() {
+        this.user && this.init && this.init();
+    },
 });
 
 

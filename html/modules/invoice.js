@@ -19,9 +19,6 @@ var _vueObj = {
         "params.slug": function() {
             this.loadInvoice();
         },
-        "user": function(newVal) {
-            newVal && this.init();
-        },
     },
     computed: {
         total_worth: function() {

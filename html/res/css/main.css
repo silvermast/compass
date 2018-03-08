@@ -38,6 +38,16 @@ a:focus {
     border-bottom: 1px solid #eee;
 }
 
+
+#vue-app {
+    -webkit-animation: 600ms ease 0s normal forwards 1 fadein;
+    animation: 600ms ease 0s normal forwards 1 fadein;
+}
+@keyframes fadein {
+    0% { opacity:0; }
+    100% { opacity:1; }
+}
+
 /*
  * Top navigation
  * Hide default border to remove 1px line.

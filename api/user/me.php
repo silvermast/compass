@@ -13,4 +13,4 @@ if (!$user = User::me())
     Response::init("Please log in", 401)->send();
 
 unset($user->passhash);
-Response::init($user, 404);
+Response::init($user, 200)->send();

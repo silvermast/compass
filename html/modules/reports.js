@@ -21,12 +21,6 @@ var _vueObj = {
         totalEarnings: 0,
         totalHours: 0,
     },
-    created: function() {
-        var vm = this;
-        Load.chartjs(function() {
-            vm.loadTasks();
-        });
-    },
     watch : {
         'filter.dateRange.value': function(newVal) {
             LocalDB.set('dashboard.filter.dateRange', newVal);
@@ -34,6 +28,12 @@ var _vueObj = {
         },
     },
     methods: {
+        init: function() {
+            var vm = this;
+            Load.chartjs(function() {
+                vm.loadTasks();
+            });
+        },
 
         /**
          * Loads a list of tasks
