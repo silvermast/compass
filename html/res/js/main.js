@@ -133,6 +133,7 @@ Vue.component('x-login-form', {
     template: '#x-login-form',
     data: function() {
         return {
+            isBusy: true,
             email: '',
             pass: '',
         };
@@ -151,11 +152,13 @@ Vue.component('x-login-form', {
                 success: function(result) {
                     vm.$emit('input', result);
                     Timeout.set(vm.checkAuth, 300000);
+                    vm.isBusy = false;
                 },
                 error: function(jqXHR) {
                     vm.$emit('input', null);
                     vm.email = '';
                     vm.pass  = '';
+                    vm.isBusy = false;
                 }
             });
         },
