@@ -95,6 +95,9 @@ function loadModule(module, params) {
     function done() {
         if (waiting) return;
 
+        Timeout.clear();
+        Interval.clear();
+
         // don't cache this selector. Creating a new Vue instance clones it and the ref becomes stale.
         $('#vue-app').html(_vueHtml);
 
