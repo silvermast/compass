@@ -15,6 +15,54 @@ var LocalDB = {
 };
 
 /**
+ * Wrapper class for setInterval.
+ * @type {{_cache: {}, set: Interval.set, clear: Interval.clear}}
+ */
+var Interval = {
+    _cache: {},
+
+    set: function(fn, timeout) {
+        var id = setInterval(fn, timeout);
+        this._cache[id] = id;
+    },
+
+    clear: function(id) {
+        if (id === undefined) {
+            $.map(this._cache, clearInterval);
+            this._cache = {}
+
+        } else {
+            clearInterval(id);
+            delete this._cache[id];
+        }
+    }
+};
+
+/**
+ * Wrapper class for setTimeout
+ * @type {{_cache: {}, set: Timeout.set, clear: Timeout.clear}}
+ */
+var Timeout = {
+    _cache: {},
+
+    set: function(fn, timeout) {
+        var id = setTimeout(fn, timeout);
+        this._cache[id] = id;
+    },
+
+    clear: function(id) {
+        if (id === undefined) {
+            $.map(this._cache, clearTimeout);
+            this._cache = {}
+
+        } else {
+            clearTimeout(id);
+            delete this._cache[id];
+        }
+    }
+};
+
+/**
  * Loads external libraries
  * @type {{_js: {}, _css: {}, javascript: Load.javascript, css: Load.css}}
  */
@@ -75,6 +123,34 @@ function isObject(param) {
 }
 function isString(param) {
     return typeof param === "string";
+}
+
+/**
+ * exception-safe JSON.parse
+ * @param param
+ * @returns {null}
+ */
+function json_decode(param) {
+    try {
+        return JSON.parse(param);
+    } catch (e) {
+        console.error(e);
+        return null
+    }
+}
+
+/**
+ * Exception-safe JSON.stringify
+ * @param param
+ * @returns {null}
+ */
+function json_encode(param) {
+    try {
+        return JSON.stringify(param);
+    } catch (e) {
+        console.error(e);
+        return null
+    }
 }
 
 /**

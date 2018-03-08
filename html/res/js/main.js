@@ -5,8 +5,7 @@ if (!location.hash) location.href = "/#/";
 var routes = {
     '/logout': function() {
         $.get('/api/logout', function(result) {
-            Alerts.success(result, {layout: 'topCenter', timeout: 1000});
-            LocalDB.del('user');
+            Alerts.success("Successfully logged out", {layout: 'topCenter', timeout: 1000});
             location.hash = '#/';
             if (App) {
                 App.user = null;
@@ -125,18 +124,41 @@ Vue.component('x-login-form', {
     template: '#x-login-form',
     data: function() {
         return {
-            alerts: {},
             email: '',
             pass: '',
         };
     },
+    created: function() {
+        this.checkAuth();
+    },
     methods: {
+        /**
+         * Checks the user's auth status
+         */
+        checkAuth: function() {
+            var vm = this;
+            $.getJSON({
+                url: '/api/user/me',
+                success: function(result) {
+                    vm.$emit('input', result);
+                    Timeout.set(vm.checkAuth, 300000);
+                },
+                error: function(jqXHR) {
+                    vm.$emit('input', null);
+                    vm.email = '';
+                    vm.pass  = '';
+                }
+            });
+        },
+
+        /**
+         * Attempts to log the user in
+         * @param e
+         */
         loginAttempt: function (e) {
             e.preventDefault();
 
             var vm = this;
-
-            vm.alerts = {};
 
             $.post({
                 url: '/api/login',
@@ -146,11 +168,11 @@ Vue.component('x-login-form', {
                 },
                 dataType: 'json',
                 success: function(result) {
-                    LocalDB.set('user', result);
                     vm.$emit('input', result);
                     Alerts.success("Successfully logged in.", {layout: 'topRight', timeout: 1000});
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
+                    Alerts.error(json_decode(jqXHR.responseText) || jqXHR.responseText, {layout: 'topCenter'});
                     console.error(jqXHR.responseText);
                 }
             });
@@ -165,7 +187,7 @@ Vue.component('x-login-form', {
 Vue.mixin({
     data: function() {
         return {
-            user: LocalDB.get('user'),
+            user: null,
             params: {},
             alerts: {},
             nav: {
@@ -187,6 +209,7 @@ Vue.mixin({
             }
         }
     },
+
 });
 
 
@@ -195,14 +218,9 @@ Vue.mixin({
  * jQuery Events
  */
 $.ajaxSetup({
-    error: function(jqXHR, textStatus, errorThrown) {
-        Alerts.error(jqXHR.responseText);
-    },
     statusCode: {
         401: function() {
-            Alerts.error("You have been logged out.", {layout: 'topCenter'});
-            App.user = false;
-            LocalDB.del('user');
+            App.user = null;
         },
     }
 });

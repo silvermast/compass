@@ -7,26 +7,20 @@ var _vueObj = {
         index: {
             in_progress: [],
             sent: [],
-            // paid: [],
+            paid: [],
         },
         invoice: {},
         tasks: [],
     },
     created: function() {
-        var vm = this;
-        vm.loadIndex();
-        vm.loadInvoice();
-
-        // update the default date every minute for unfinished tasks
-        setInterval(function() {
-            if (vm.tasks && vm.tasks.length && $('.td-input input:focus', vm.$el).length === 0)
-                vm.tasks = vm.tasks.map(vm.formatTask);
-
-        }, 10000);
+        this.init();
     },
     watch: {
         "params.slug": function() {
             this.loadInvoice();
+        },
+        "user": function(newVal) {
+            newVal && this.init();
         },
     },
     computed: {
@@ -41,7 +35,23 @@ var _vueObj = {
         },
     },
     methods: {
+        init: function() {
+            var vm = this;
+            vm.loadIndex();
+            vm.loadInvoice();
 
+            // update the default date every minute for unfinished tasks
+            Interval.clear();
+            Interval.set(function() {
+                if (vm.tasks && vm.tasks.length && $('.td-input input:focus', vm.$el).length === 0)
+                    vm.tasks = vm.tasks.map(vm.formatTask);
+
+            }, 10000);
+        },
+
+        /**
+         * Loads the sidebar index
+         */
         loadIndex: function() {
             var vm = this;
             $.get({
@@ -67,6 +77,10 @@ var _vueObj = {
                 },
             });
         },
+
+        /**
+         * Loads the invoice selected
+         */
         loadInvoice: function() {
             var vm = this;
             if (!vm.params.slug) {
