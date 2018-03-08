@@ -220,11 +220,17 @@ Vue.mixin({
     },
     watch: {
         user: function(newVal) {
-            newVal && this.init && this.init();
+            var vm = this;
+            vm.$nextTick(function() {
+                newVal && vm.init && vm.init();
+            });
         }
     },
     created: function() {
-        this.user && this.init && this.init();
+        var vm = this;
+        vm.$nextTick(function() {
+            vm.user && vm.init && vm.init();
+        });
     },
 });
 
