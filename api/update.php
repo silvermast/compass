@@ -7,13 +7,13 @@ use core\api\Response;
 
 $root = ROOT;
 
+$response   = [];
+$response[] = core\Shell::exec("git --exec-path='$root' fetch --quiet origin")
+$response[] = core\Shell::exec("git --exec-path='$root' reset --hard origin/master")
+
 ob_start();
 core\Update::init()->run();
-$update = ob_get_contents();
+$response[] = ob_get_contents();
 ob_end_clean();
 
-Response::init([
-    core\Shell::exec("git --exec-path='$root' fetch --quiet origin"),
-    core\Shell::exec("git --exec-path='$root' reset --hard origin/master"),
-    $update,
-], 200)->send();
+Response::init($response, 200)->send();
