@@ -22,6 +22,7 @@ class Invoice extends core\Model {
     public $invoice_id;
     public $slug;
     public $title;
+    public $notes;
     public $client;
     public $rate;
     public $status;
@@ -36,6 +37,7 @@ class Invoice extends core\Model {
         $v = core\Validator::init();
         $v->check_number($this->invoice_id, 'invoice_id', 'Invoice ID', false);
         $v->check_text($this->title, 'title', 'Title', 2, 255, true);
+        $v->check_text($this->notes, 'notes', 'Notes', 0, pow(2, 32), true);
         $v->check_text($this->client, 'client', 'Client', 2, 255, true);
         $v->check_number($this->rate, 'rate', 'Rate', true);
         $v->check_list($this->status, 'status', self::STATUSES, true);

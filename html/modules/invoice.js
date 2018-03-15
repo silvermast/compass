@@ -113,7 +113,6 @@ var _vueObj = {
                 dataType: 'json',
                 url: '/api/task/list?invoice_id=' + vm.invoice.invoice_id,
                 success: function(result) {
-                    vm.alerts = {};
                     vm.tasks  = $.map(result, vm.formatTask);
 
                     if (!vm.tasks[0] || vm.tasks[0]._complete)
@@ -176,6 +175,11 @@ var _vueObj = {
                 t._time_end = EndTime.format('HH:mm');
 
             return t;
+        },
+
+        saveInvoiceDelayed: function() {
+            Timeout.clear(this._saveInvoiceTimeout);
+            this._saveInvoiceTimeout = Timeout.set(this.saveInvoice, 1000);
         },
 
         /**
