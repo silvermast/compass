@@ -51,6 +51,11 @@ var _vueObj = {
          */
         loadIndex: function() {
             var vm = this;
+
+            function sortInvoice(a, b) {
+                return a.client + ' - ' + a.title > b.client + ' - ' + b.title;
+            }
+
             $.get({
                 dataType: 'json',
                 url: '/api/invoice/list',
@@ -70,9 +75,9 @@ var _vueObj = {
                         index[item.status].push(item);
                     });
 
-                    index.in_progress.sort();
-                    index.sent.sort();
-                    index.paid.sort();
+                    index.in_progress.sort(sortInvoice);
+                    index.sent.sort(sortInvoice);
+                    index.paid.sort(sortInvoice);
 
                     vm.index = index;
                 },
