@@ -70,6 +70,10 @@ var _vueObj = {
                         index[item.status].push(item);
                     });
 
+                    index.in_progress.sort();
+                    index.sent.sort();
+                    index.paid.sort();
+
                     vm.index = index;
                 },
             });
