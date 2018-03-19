@@ -8,8 +8,8 @@ use core\api\Response;
 $root = ROOT;
 
 $response   = [];
-$response[] = core\Shell::exec("git --exec-path='$root' fetch --quiet origin")
-$response[] = core\Shell::exec("git --exec-path='$root' reset --hard origin/master")
+$response[] = core\Shell::exec("git --exec-path='$root' fetch --quiet origin");
+$response[] = core\Shell::exec("git --exec-path='$root' reset --hard origin/master");
 
 ob_start();
 core\Update::init()->run();
