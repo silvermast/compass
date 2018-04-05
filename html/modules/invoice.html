@@ -4,7 +4,7 @@
     <template v-else>
         <x-owner-nav selected="invoice" />
 
-        <div class="row">
+        <button class="row">
             <div class="col-xs-12 visible-xs text-center">
                 <button type="button" class="btn btn-link" data-toggle="visible" data-target="#sidebar" aria-expanded="false" aria-controls="sidebar">Toggle Index</button>
             </div>
@@ -97,6 +97,7 @@
                         <th width="100">End</th>
                         <th width="80">Elapsed</th>
                         <th class="text-center"><i class="fa fa-save"></i></th>
+                        <th class="text-center"><i class="fa fa-ellipsis-v"></i></th>
                     </tr>
                     </thead>
                     <tbody>
@@ -114,6 +115,14 @@
                             @click="saveTask(task_i)"
                             :class="{'bg-warning': !task._complete}">
                             <i class="fa fa-save"></i>
+                        </td>
+                        <td class="td-button dropdown">
+                            <div class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fa fa-ellipsis-v"></i>
+                            </div>
+                            <ul class="dropdown-menu">
+                                <li @click="deleteTask(task_i)"><a class="text-danger" href="#" @click.prevent><i class="fa fa-trash"></i> Delete</a></li>
+                            </ul>
                         </td>
                     </tr>
                     </tbody>
@@ -153,6 +162,8 @@
                                 Save
                                 <i class="fa fa-save"></i>
                             </button>
+
+                            <button type="button" class="btn btn-danger btn-block" @click="deleteTask(task_i)">Delete <i class="fa fa-trash"></i></a></button>
                         </div>
 
                     </li>

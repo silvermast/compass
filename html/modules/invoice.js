@@ -249,5 +249,39 @@ var _vueObj = {
             });
         },
 
+
+        /**
+         * Deletes a single task
+         * @param task_i array key of task
+         */
+        deleteTask: function(task_i) {
+            var vm = this;
+            if (!vm.tasks[task_i])
+                return;
+
+            if (!confirm('Are you sure you want to delete this task?'))
+                return;
+
+            var tData = clone(vm.tasks[task_i]);
+
+            tData.start_time = tData._time_start ? (tData._date + 'T' + tData._time_start + ':00') : null;
+            tData.end_time   = tData._time_end ? tData._date + 'T' + tData._time_end + ':00' : null;
+
+            tData.invoice_id    = vm.invoice.invoice_id;
+            tData.invoice_title = vm.invoice.invoice_title;
+            tData.client        = vm.invoice.client;
+
+            $.post({
+                dataType: 'json',
+                url: '/api/task/delete',
+                data: tData,
+                success: function(result) {
+                    var newTask = vm.formatTask(result);
+                    vm.$delete(vm.tasks, task_i);
+                    Alerts.success("Successfully deleted the task '" + newTask.title + "'");
+                },
+            });
+        },
+
     },
 };

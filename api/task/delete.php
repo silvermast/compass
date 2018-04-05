@@ -21,6 +21,12 @@ switch ($user->perm_level) {
         Response::init('Invalid User', 401)->send();
 }
 
-$result = Task::new($_REQUEST)->save();
+if (!isset($_REQUEST['slug']))
+    Response::init('Please provide a slug', 400)->send();
 
-Response::init($result)->send();
+if (!$task = Task::findOne(['slug' => $_REQUEST['slug']]))
+    Response::init("Task not found", 404)->send();
+
+$task->delete();
+
+Response::init("Successfully deleted the task.")->send();
