@@ -1,4 +1,5 @@
 var _vueObj = {
+    mixins: [authMixin],
     data: {
         isBusy: true,
         filter: {
@@ -47,7 +48,8 @@ var _vueObj = {
             $.post({
                 url: '/api/task/list',
                 data: {
-                    start_time: {$gt: dates[0].toJSON(), $lt: dates[1].toJSON()}
+                    start_time: {$gt: dates[0].toJSON(), $lt: dates[1].toJSON()},
+                    end_time: {$gt: '0000-00-00'},
                 },
                 dataType: 'json',
                 success: function(result) {

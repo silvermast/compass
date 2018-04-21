@@ -1,4 +1,5 @@
 var _vueObj = {
+    mixins: [authMixin],
     data: {
         isBusy: {},
         nav: {},
@@ -43,7 +44,8 @@ var _vueObj = {
                 if (vm.tasks && vm.tasks.length && $('.td-input input:focus', vm.$el).length === 0)
                     vm.tasks = vm.tasks.map(vm.formatTask);
 
-            }, 10000);
+            }, 30000);
+
         },
 
         /**

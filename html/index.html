@@ -75,15 +75,9 @@
 
 <script id="x-login-form" type="text/x-template">
     <div id="login-container" class="container">
-        <div v-if="isBusy" class="text-center p20">
-            <x-loader></x-loader>
-        </div>
-        <div class="row" v-else>
+        <div class="row">
             <div class="col-xs-12 col-md-4 col-md-offset-4">
                 <form class="form-signin" @submit="loginAttempt">
-
-                    <x-alerts :alerts="alerts"></x-alerts>
-
                     <h2 class="form-signin-heading">Please sign in</h2>
 
                     <label>Email:</label>

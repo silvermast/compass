@@ -136,36 +136,11 @@ Vue.component('x-login-form', {
     template: '#x-login-form',
     data: function() {
         return {
-            isBusy: true,
             email: '',
             pass: '',
         };
     },
-    created: function() {
-        this.checkAuth();
-    },
     methods: {
-        /**
-         * Checks the user's auth status
-         */
-        checkAuth: function() {
-            var vm = this;
-            $.getJSON({
-                url: '/api/user/me',
-                success: function(result) {
-                    vm.$emit('input', result);
-                    Timeout.set(vm.checkAuth, 300000);
-                    vm.isBusy = false;
-                },
-                error: function(jqXHR) {
-                    vm.$emit('input', null);
-                    vm.email = '';
-                    vm.pass  = '';
-                    vm.isBusy = false;
-                }
-            });
-        },
-
         /**
          * Attempts to log the user in
          * @param e
@@ -199,10 +174,73 @@ Vue.component('x-login-form', {
 /**
  * Default vue options & methods
  */
+var authMixin = {
+    data: function() {
+        return {
+            _authTimeout: null,
+            _authXHR: null,
+            user: null,
+        }
+    },
+    watch: {
+        user: function(newVal, oldVal) {
+            console.log('vm.user changed', {oldVal:oldVal, newVal:newVal});
+            if (newVal && !oldVal) {
+                this._callInit();
+            }
+        }
+    },
+    created: function() {
+        var vm = this;
+        console.log('vm.created', {user: vm.user});
+        vm.checkAuth(this._callInit);
+    },
+    methods: {
+        _callInit: function() {
+            var vm = this;
+            vm.$nextTick(function() {
+                vm.user && vm.init && vm.init();
+            });
+        },
+
+        /**
+         * Checks the user's auth status
+         */
+        checkAuth: function(done) {
+            var vm = this;
+
+            console.log(vm._authTimeout, vm._authXHR);
+
+            Timeout.clear(vm._authTimeout);
+
+            if (vm._authXHR) {
+                vm._authXHR.abort();
+                vm._authXHR = null;
+            }
+
+            vm._authXHR = $.getJSON({
+                url: '/api/user/me',
+                success: function(result) {
+                    vm.user = result;
+                    done && done();
+                    vm._authTimeout = Timeout.set(vm.checkAuth, 60000);
+                },
+                error: function(jqXHR) {
+                    vm.user = null;
+                    done && done();
+                },
+                done: function() {
+                    vm._authXHR = null;
+                },
+            });
+        },
+
+    }
+};
+
 Vue.mixin({
     data: function() {
         return {
-            user: null,
             params: {},
             alerts: {},
             nav: {
@@ -223,20 +261,6 @@ Vue.mixin({
                 },
             }
         }
-    },
-    watch: {
-        user: function(newVal) {
-            var vm = this;
-            vm.$nextTick(function() {
-                newVal && vm.init && vm.init();
-            });
-        }
-    },
-    created: function() {
-        var vm = this;
-        vm.$nextTick(function() {
-            vm.user && vm.init && vm.init();
-        });
     },
 });
 

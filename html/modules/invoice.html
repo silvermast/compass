@@ -4,7 +4,7 @@
     <template v-else>
         <x-owner-nav selected="invoice" />
 
-        <button class="row">
+        <div class="row">
             <div class="col-xs-12 visible-xs text-center">
                 <button type="button" class="btn btn-link" data-toggle="visible" data-target="#sidebar" aria-expanded="false" aria-controls="sidebar">Toggle Index</button>
             </div>
@@ -163,7 +163,7 @@
                                 <i class="fa fa-save"></i>
                             </button>
 
-                            <button type="button" class="btn btn-danger btn-block" @click="deleteTask(task_i)">Delete <i class="fa fa-trash"></i></a></button>
+                            <button type="button" class="btn btn-danger btn-block" @click="deleteTask(task_i)">Delete <i class="fa fa-trash"></i></button>
                         </div>
 
                     </li>
