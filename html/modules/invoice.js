@@ -12,13 +12,23 @@ var _vueObj = {
         },
         invoice: {},
         tasks: [],
+        editingNotes: false,
     },
     created: function() {
         this.init();
     },
     watch: {
         "params.slug": function() {
-            this.loadInvoice();
+            var vm = this;
+            vm.$nextTick(function() {
+                this.loadInvoice();
+            });
+
+            // mobile handling of sidebar display
+            $toggleIndex = $('.toggle-index', vm.$el);
+            if ($toggleIndex.is(':visible')) {
+                $toggleIndex.trigger('click');
+            }
         },
     },
     computed: {

@@ -178,8 +178,9 @@ nav .logo {
     border-radius: 0;
     box-shadow: none;
 }
-textarea.form-control {
+textarea.form-control.borderless {
     border: 0;
+    box-shadow: 0 1px 5px #cccccc;
 }
 
 .form-control.text-muted {

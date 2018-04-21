@@ -4,10 +4,11 @@
     <template v-else>
         <x-owner-nav selected="invoice" />
 
+        <div class="visible-xs text-center">
+            <button type="button" class="btn btn-info btn-block toggle-index" data-toggle="visible" data-target="#sidebar" aria-expanded="false" aria-controls="sidebar"><i class="fa fa-list"></i> Toggle Index</button>
+            <br>
+        </div>
         <div class="row">
-            <div class="col-xs-12 visible-xs text-center">
-                <button type="button" class="btn btn-link" data-toggle="visible" data-target="#sidebar" aria-expanded="false" aria-controls="sidebar">Toggle Index</button>
-            </div>
 
             <section id="sidebar" class="col-xs-12 col-sm-2 sidebar">
                 <ul class="nav nav-sidebar nav-sidebar-sticky">
@@ -173,7 +174,8 @@
                 <hr class="mv-20">
                 <div class="form-group">
                     <label>Notes</label>
-                    <textarea class="form-control borderless h-200" v-model="invoice.notes" @input="saveInvoiceDelayed()"></textarea>
+                    <textarea class="form-control borderless h-200" v-model="invoice.notes"></textarea>
+                    <button type="button" class="btn btn-success" @click="saveInvoice()"><i class="fa fa-save"></i> Save</button>
                 </div>
 
 
