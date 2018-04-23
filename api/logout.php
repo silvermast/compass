@@ -11,8 +11,11 @@ use core\api\Response;
 use models\User;
 
 try {
-    unset($_SESSION);
-    session_destroy();
+    if (!session_id())
+        session_start();
+    
+    unset($_SESSION['user_id']);
+    session_commit();
     Response::init('Successfully logged out')->send();
 
 } catch (Exception $e) {

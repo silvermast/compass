@@ -6,11 +6,10 @@ var routes = {
     '/logout': function() {
         $.get('/api/logout', function(result) {
             Alerts.success("Successfully logged out", {layout: 'topCenter', timeout: 1000});
-            location.hash = '#/';
             if (App) {
                 App.user = null;
-                App.$forceUpdate();
             }
+            location.hash = '#/';
         });
     },
     '/reports': function() {
@@ -184,7 +183,6 @@ var authMixin = {
     },
     watch: {
         user: function(newVal, oldVal) {
-            console.log('vm.user changed', {oldVal:oldVal, newVal:newVal});
             if (newVal && !oldVal) {
                 this._callInit();
             }
@@ -192,7 +190,6 @@ var authMixin = {
     },
     created: function() {
         var vm = this;
-        console.log('vm.created', {user: vm.user});
         vm.checkAuth(this._callInit);
     },
     methods: {
@@ -209,8 +206,6 @@ var authMixin = {
         checkAuth: function(done) {
             var vm = this;
 
-            console.log(vm._authTimeout, vm._authXHR);
-
             Timeout.clear(vm._authTimeout);
 
             if (vm._authXHR) {
@@ -222,12 +217,11 @@ var authMixin = {
                 url: '/api/user/me',
                 success: function(result) {
                     vm.user = result;
-                    done && done();
+                    // done && done();
                     vm._authTimeout = Timeout.set(vm.checkAuth, 60000);
                 },
                 error: function(jqXHR) {
                     vm.user = null;
-                    done && done();
                 },
                 done: function() {
                     vm._authXHR = null;

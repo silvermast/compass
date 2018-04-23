@@ -14,9 +14,6 @@ var _vueObj = {
         tasks: [],
         editingNotes: false,
     },
-    created: function() {
-        this.init();
-    },
     watch: {
         "params.slug": function() {
             var vm = this;
