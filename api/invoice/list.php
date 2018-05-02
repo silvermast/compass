@@ -27,5 +27,10 @@ switch ($user->perm_level) {
 }
 
 $results = array_values(Invoice::findMulti($_REQUEST, ['sort' => ['status' => 1, 'date_added' => -1, 'invoice_id' => -1]]));
+foreach ($results as &$invoice) {
+    if ($invoice->status === 'in_progress') {
+        $invoice->is_incomplete = \models\Task::count(['invoice_id' => $invoice->invoice_id, 'end_time' => '0000-00-00']) > 0;
+    }
+}
 
 Response::init($results)->send();

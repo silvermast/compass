@@ -271,6 +271,10 @@ $.ajaxSetup({
     }
 });
 
+window.onfocus = function() {
+    App.checkAuth();
+}
+
 $(document).on('click', '[href]', function(e) {
     var href = $(this).attr('href');
 

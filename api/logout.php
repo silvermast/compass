@@ -13,7 +13,7 @@ use models\User;
 try {
     if (!session_id())
         session_start();
-    
+
     unset($_SESSION['user_id']);
     session_commit();
     Response::init('Successfully logged out')->send();

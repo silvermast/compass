@@ -101,6 +101,12 @@ nav .logo {
     padding-right: 20px;
     padding-left: 20px;
 }
+.nav-sidebar > .warning > a,
+.nav-sidebar > .warning > a:hover,
+.nav-sidebar > .warning > a:focus {
+    color: #fff;
+    background-color: #f39c12;
+}
 .nav-sidebar > .active > a,
 .nav-sidebar > .active > a:hover,
 .nav-sidebar > .active > a:focus {
