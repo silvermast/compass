@@ -55,7 +55,7 @@
 
                     <div class="form-group">
                         <div class="dropdown pointer">
-                            <button type="button" class="btn btn-lg dropdown-toggle w-150"
+                            <div type="button" class="btn btn-lg dropdown-toggle w-150"
                                     :class="'btn-' + InvoiceStatusOptions.colors[invoice.status]"
                                     id="statusDropdownButton"
                                     data-toggle="dropdown"
@@ -63,7 +63,7 @@
                                     aria-expanded="false">
                                 {{InvoiceStatusOptions.types[invoice.status]}}
                                 <span class="pull-right"><i class="fa fa-chevron-down"></i></span>
-                            </button>
+                            </div>
                             <div class="dropdown-menu" aria-labelledby="statusDropdownButton">
                                 <li v-for="(so_name, so_key) in InvoiceStatusOptions.types" @click="$set(invoice, 'status', so_key)"><a class="pointer" v-text="so_name"></a></li>
                             </div>
