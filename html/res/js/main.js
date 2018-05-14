@@ -184,7 +184,7 @@ var authMixin = {
     watch: {
         user: function(newVal, oldVal) {
             if (newVal && !oldVal) {
-                this._callInit();
+                this.checkAuth(this._callInit);
             }
         }
     },
@@ -217,7 +217,7 @@ var authMixin = {
                 url: '/api/user/me',
                 success: function(result) {
                     vm.user = result;
-                    // done && done();
+                    done && done();
                     vm._authTimeout = Timeout.set(vm.checkAuth, 60000);
                 },
                 error: function(jqXHR) {
