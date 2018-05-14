@@ -100,7 +100,6 @@ function loadModule(module, params) {
         // don't cache this selector. Creating a new Vue instance clones it and the ref becomes stale.
         $('#vue-app').html(_vueHtml);
 
-        // console.log('loadModule', module, (params || {}));
         _vueObj.data.params = params || {};
         _vueObj.el = '#vue-app';
 
@@ -176,6 +175,7 @@ Vue.component('x-login-form', {
 var authMixin = {
     data: function() {
         return {
+            _hasLoaded: false,
             _authTimeout: null,
             _authXHR: null,
             user: null,
@@ -183,19 +183,20 @@ var authMixin = {
     },
     watch: {
         user: function(newVal, oldVal) {
-            if (newVal && !oldVal) {
+            if (this._hasLoaded && newVal && !oldVal) {
                 this.checkAuth(this._callInit);
             }
         }
     },
     created: function() {
         var vm = this;
-        vm.checkAuth(this._callInit);
+        vm.checkAuth(vm._callInit);
     },
     methods: {
         _callInit: function() {
             var vm = this;
             vm.$nextTick(function() {
+                vm._hasLoaded = true;
                 vm.user && vm.init && vm.init();
             });
         },
@@ -218,7 +219,7 @@ var authMixin = {
                 success: function(result) {
                     vm.user = result;
                     done && done();
-                    vm._authTimeout = Timeout.set(vm.checkAuth, 60000);
+                    vm._authTimeout = Timeout.set(vm.checkAuth, 10000);
                 },
                 error: function(jqXHR) {
                     vm.user = null;
