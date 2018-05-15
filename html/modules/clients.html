@@ -46,14 +46,18 @@
                         <div class="under-label">Color</div>
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group pull-right">
                         <button type="button" class="btn btn-success btn-lg" @click="saveClient()"><i class="fa fa-save"></i> Save</button>
                         <div class="under-label">&nbsp;</div>
                     </div>
 
                 </div>
 
-
+                <hr class="mv-20">
+                <div class="form-group">
+                    <label>Notes</label>
+                    <textarea class="form-control borderless h-400" v-model="client.notes"></textarea>
+                </div>
             </section>
 
         </div>

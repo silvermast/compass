@@ -17,6 +17,7 @@ class Client extends core\Model {
     public $slug;
     public $name;
     public $color;
+    public $notes;
     public $date_added;
 
     /**
@@ -29,6 +30,7 @@ class Client extends core\Model {
         $v->check_number($this->client_id, 'client_id', 'Client ID', false);
         $v->check_text($this->name, 'name', 'Name', 2, 255, true);
         $v->check_text($this->color, 'color', 'Color', 6, 6, false);
+        $v->check_text($this->notes, 'notes', 'Notes', 0, pow(2, 32), false);
         $v->done();
 
         return $this;
