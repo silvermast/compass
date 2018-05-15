@@ -10,6 +10,7 @@ var _vueObj = {
             sent: [],
             paid: [],
         },
+        clients: [],
         invoice: {},
         tasks: [],
         editingNotes: false,
@@ -42,6 +43,7 @@ var _vueObj = {
     methods: {
         init: function() {
             var vm = this;
+            vm.loadClients();
             vm.loadIndex();
             vm.loadInvoice();
 
@@ -53,6 +55,17 @@ var _vueObj = {
 
             }, 30000);
 
+        },
+
+        loadClients: function() {
+            var vm = this;
+            $.get({
+                dataType: 'json',
+                url: '/api/client/list',
+                success: function(result) {
+                    vm.clients = result;
+                },
+            });
         },
 
         /**
@@ -157,6 +170,17 @@ var _vueObj = {
             return m;
         },
 
+        setClient: function(client) {
+            var vm = this;
+            vm.$set(vm.invoice, 'client', client.name);
+            vm.$set(vm.invoice, 'client_id', client.client_id);
+            vm.tasks = vm.tasks.map(function(task) {
+                task.client_id = client.client_id;
+                task.client    = client.name;
+                return task;
+            });
+        },
+
         /**
          *
          * @param t
@@ -241,6 +265,7 @@ var _vueObj = {
             tData.invoice_id    = vm.invoice.invoice_id;
             tData.invoice_title = vm.invoice.invoice_title;
             tData.client        = vm.invoice.client;
+            tData.client_id     = vm.invoice.client_id;
 
             $.post({
                 dataType: 'json',

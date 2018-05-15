@@ -15,6 +15,15 @@ var routes = {
     '/reports': function() {
         loadModule('reports');
     },
+    '/clients': function() {
+        loadModule('clients');
+    },
+    '/clients/new': function() {
+        loadModule('clients');
+    },
+    '/clients/v/:invoice_id': function(slug) {
+        loadModule('clients', {slug: slug});
+    },
     '/invoice/v/:invoice_id': function(slug) {
         loadModule('invoice', {slug: slug});
     },

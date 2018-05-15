@@ -19,6 +19,7 @@ class Task extends core\Model {
     public $title;
     public $project;
     public $client;
+    public $client_id;
     public $invoice_id;
     public $invoice_title;
     public $start_time;

@@ -24,6 +24,7 @@ class Invoice extends core\Model {
     public $title;
     public $notes;
     public $client;
+    public $client_id;
     public $rate;
     public $status;
     public $date_added;

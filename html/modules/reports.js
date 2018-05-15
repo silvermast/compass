@@ -18,6 +18,7 @@ var _vueObj = {
         },
         tasks: {},
         invoices: {},
+        clients: {},
 
         totalEarnings: 0,
         totalHours: 0,
@@ -31,8 +32,16 @@ var _vueObj = {
     methods: {
         init: function() {
             var vm = this;
-            Load.chartjs(function() {
-                vm.loadTasks();
+
+            $.getJSON('/api/client/list', function(clients) {
+                vm.clients = clients.reduce(function(obj, client) {
+                    obj[client.client_id] = client;
+                    return obj;
+                }, {});
+
+                Load.chartjs(function() {
+                    vm.loadTasks();
+                });
             });
         },
 
@@ -145,15 +154,20 @@ var _vueObj = {
                 if (!t.start_time)
                     return totals;
 
-                if (!totals[t.client])
-                    totals[t.client] = 0;
-                totals[t.client] += vm.getTaskHours(t);
+                if (!totals[t.client_id])
+                    totals[t.client_id] = 0;
+                totals[t.client_id] += vm.getTaskHours(t);
 
                 return totals;
             }, {});
+            console.log(DataSets);
 
-            var labels = objKeys(DataSets),
-                colors = labels.map(strToColor);
+            var labels = objKeys(DataSets).map(function(client_id) {
+                return vm.clients[client_id].name;
+            });
+            var colors = objKeys(DataSets).map(function(client_id) {
+                return vm.clients[client_id].color || strToColor(vm.clients[client_id].name);
+            });
 
             $chart.data('chart').data = {
                 datasets: [{
@@ -228,7 +242,7 @@ var _vueObj = {
                 if (!totals[t.client]) {
                     totals[t.client] = {
                         label: t.client,
-                        backgroundColor: strToColor(t.client),
+                        backgroundColor: vm.clients[t.client_id].color || strToColor(t.client),
                         data: clone(zeroData),
                     };
                 }

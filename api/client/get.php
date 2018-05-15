@@ -1,9 +1,13 @@
 <?php
+/**
+ * @author Jason Wright <jason.dee.wright@gmail.com>
+ * @since 7/17/17
+ * @package BlackMast Tasks
+ */
 require_once __DIR__ . '/../../core.php';
 
 use core\api\Response;
-use models\Invoice;
-use models\Task;
+use models\Client;
 use models\User;
 
 /**
@@ -11,6 +15,8 @@ use models\User;
  */
 if (!$user = User::me())
     Response::init("Please log in", 401)->send();
+
+$query = [];
 
 switch ($user->perm_level) {
     case User::PERMLEVELS['Owner']:
@@ -22,11 +28,10 @@ switch ($user->perm_level) {
         Response::init('Invalid User', 401)->send();
 }
 
-$invoice = Invoice::new($_REQUEST)->save();
+if (!isset($_REQUEST['slug']))
+    Response::init('Please provide a slug', 400)->send();
 
-Task::updateMulti(['invoice_id' => $invoice->invoice_id], [
-    'client_id' => $invoice->client_id,
-    'client'    => $invoice->client,
-]);
+if ($result = Client::findOne($_REQUEST))
+    Response::init($result)->send();
 
-Response::init($invoice)->send();
+Response::init("Client not found", 404);

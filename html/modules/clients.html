@@ -1,0 +1,62 @@
+<div>
+    <x-login-form v-model="user" v-if="!user" />
+
+    <template v-else>
+        <x-owner-nav selected="clients" />
+
+        <div class="visible-xs text-center">
+            <button type="button" class="btn btn-info btn-block toggle-index" data-toggle="visible" data-target="#sidebar" aria-expanded="false" aria-controls="sidebar"><i class="fa fa-list"></i> Toggle Index</button>
+            <br>
+        </div>
+        <div class="row">
+
+            <section id="sidebar" class="col-xs-12 col-sm-2 sidebar">
+                <ul class="nav nav-sidebar nav-sidebar-sticky">
+                    <li :class="{active: !params.slug}">
+                        <a class="index-anchor" href="#/clients/new" tabindex="-1"><span class="fa fa-plus"></span> Add New Client</a>
+                    </li>
+                </ul>
+
+                <ul class="nav nav-sidebar nav-sidebar-content">
+                    <li v-for="c in index" :class="{active: c.slug === params.slug}">
+                        <a class="index-anchor" :href="'#/clients/v/' + c.slug">
+                            <i class="fa fa-user-circle"></i>
+                            <i class="fa fa-circle" :style="'color:' + c.color"></i>
+                            <span v-html="c.name"></span>
+                        </a>
+                    </li>
+                </ul>
+
+                <div class="text-center hidden-sm hidden-md hidden-lg">
+                    <div class="btn btn-link" data-toggle="visible" data-target="#sidebar">Close</div>
+                </div>
+                <hr class="hidden-sm hidden-md hidden-lg mv-20" />
+            </section>
+
+            <section class="col-xs-12 col-sm-10 col-sm-offset-2 main">
+                <br>
+                <div class="form-inline">
+
+                    <div class="form-group">
+                        <input type="text" class="form-control input-lg borderless w-300" v-model="client.name">
+                        <div class="under-label">Name</div>
+                    </div>
+                    <div class="form-group">
+                        <input type="color" class="form-control input-lg borderless w-100" v-model="client.color">
+                        <div class="under-label">Color</div>
+                    </div>
+
+                    <div class="form-group">
+                        <button type="button" class="btn btn-success btn-lg" @click="saveClient()"><i class="fa fa-save"></i> Save</button>
+                        <div class="under-label">&nbsp;</div>
+                    </div>
+
+                </div>
+
+
+            </section>
+
+        </div>
+
+    </template>
+</div>

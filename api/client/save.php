@@ -2,8 +2,7 @@
 require_once __DIR__ . '/../../core.php';
 
 use core\api\Response;
-use models\Invoice;
-use models\Task;
+use models\Client;
 use models\User;
 
 /**
@@ -22,11 +21,6 @@ switch ($user->perm_level) {
         Response::init('Invalid User', 401)->send();
 }
 
-$invoice = Invoice::new($_REQUEST)->save();
+$result = Client::new($_REQUEST)->save();
 
-Task::updateMulti(['invoice_id' => $invoice->invoice_id], [
-    'client_id' => $invoice->client_id,
-    'client'    => $invoice->client,
-]);
-
-Response::init($invoice)->send();
+Response::init($result)->send();
