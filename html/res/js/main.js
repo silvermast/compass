@@ -192,14 +192,14 @@ var authMixin = {
     },
     watch: {
         user: function(newVal, oldVal) {
-            if (this._hasLoaded && newVal && !oldVal) {
-                this.checkAuth(this._callInit);
+            if (newVal && !oldVal) {
+                this._callInit();
             }
         }
     },
     created: function() {
         var vm = this;
-        vm.checkAuth(vm._callInit);
+        vm.checkAuth();
     },
     methods: {
         _callInit: function() {
@@ -213,7 +213,7 @@ var authMixin = {
         /**
          * Checks the user's auth status
          */
-        checkAuth: function(done) {
+        checkAuth: function() {
             var vm = this;
 
             Timeout.clear(vm._authTimeout);
@@ -227,13 +227,13 @@ var authMixin = {
                 url: '/api/user/me',
                 success: function(result) {
                     vm.user = result;
-                    done && done();
                     vm._authTimeout = Timeout.set(vm.checkAuth, 10000);
                 },
                 error: function(jqXHR) {
                     vm.user = null;
                 },
                 done: function() {
+                    vm._hasLoaded = true;
                     vm._authXHR = null;
                 },
             });
