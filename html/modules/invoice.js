@@ -279,6 +279,7 @@ var _vueObj = {
                         vm.addTask();
 
                     Alerts.success("Successfully saved the task '" + newTask.title + "'");
+                    vm.loadIndex();
                 },
             });
         },
@@ -313,6 +314,7 @@ var _vueObj = {
                     var newTask = vm.formatTask(result);
                     vm.$delete(vm.tasks, task_i);
                     Alerts.success("Successfully deleted the task '" + newTask.title + "'");
+                    vm.loadIndex();
                 },
             });
         },
