@@ -219,6 +219,14 @@ var _vueObj = {
             return t;
         },
 
+        setElapsedEstimate: function(t) {
+            var StartTime = moment(t._date + ' ' + t._time_start || '0000-00-00');
+            var EndTime   = moment(t._date + ' ' + t._time_end || '0000-00-00');
+            var elapsed   = (((EndTime - StartTime) || 0) / 1000);
+
+            this.$set(t, '_elapsed_est', elapsed > 0 ? timeFormat(elapsed) : 'N/A');
+        },
+
         saveInvoiceDelayed: function() {
             Timeout.clear(this._saveInvoiceTimeout);
             this._saveInvoiceTimeout = Timeout.set(this.saveInvoice, 1000);
