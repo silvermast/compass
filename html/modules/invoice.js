@@ -5,6 +5,8 @@ var _vueObj = {
         nav: {},
 
         query: '',
+        query_timeout: null,
+
         index: {
             in_progress: [],
             sent: [],
@@ -28,6 +30,25 @@ var _vueObj = {
                 $toggleIndex.trigger('click');
             }
         },
+        query: function() {
+            var vm = this;
+            clearTimeout(vm.query_timeout);
+            vm.query_timeout = setTimeout(function() {
+                var rexp = new RegExp(vm.query.replace(' ', '.*'), 'ig');
+
+                vm.tasks = vm.tasks.map(function(task) {
+                    if (!vm.query || !vm.query.length) {
+                        task._matches_filter = true; // filter is empty, so everything matches.
+                    } else if (rexp.test(task.title)) {
+                        task._matches_filter = true;
+                    } else {
+                        task._matches_filter = false;
+                    }
+                    return task;
+                });
+
+            }, 250);
+        },
     },
     computed: {
         total_worth: function() {
@@ -36,7 +57,7 @@ var _vueObj = {
         total_hours: function() {
             var vm = this;
             return vm.tasks.reduce(function(total, task) {
-                return total + (task._elapsed_h ? task._elapsed_h : 0);
+                return total + (task._matches_filter && task._elapsed_h ? task._elapsed_h : 0);
             }, 0);
         },
     },
@@ -190,6 +211,7 @@ var _vueObj = {
             var vm        = this;
             var StartTime = moment(t.start_time || '0000-00-00');
             var EndTime   = moment(t.end_time || '0000-00-00');
+            t._matches_filter = true;
 
             t._time_start_valid = StartTime.isValid();
             t._time_end_valid   = EndTime.isValid();

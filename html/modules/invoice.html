@@ -96,6 +96,8 @@
                     <small class="pr-20">Worth: <strong class="text-success" v-text="'$' + numberFormat(total_worth, 2)"></strong></small>
                     <small class="pr-20">Hours: <strong class="text-success" v-text="total_hours"></strong></small>
 
+                    <input type="search" class="form-control form-control-sm borderless w-200" v-model="query" placeholder="Search" style="display:inline-block">
+
                     <small class="pr-20 pull-right"><a class="text-muted" :href="'/api/invoice/download-csv?slug=' + invoice.slug"><i class="fa fa-download"></i> Download CSV</a></small>
                 </div>
 
@@ -115,7 +117,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr v-for="(task, task_i) in tasks">
+                    <tr v-for="(task, task_i) in tasks" v-if="task._matches_filter">
                         <td class="td-input"><input class="form-control" type="text" v-model="task.title"></td>
                         <td class="td-input"><input class="form-control" type="text" v-model="task.notes"></td>
                         <td class="td-input"><input class="form-control" type="date" v-model="task._date"></td>
