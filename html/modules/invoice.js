@@ -34,19 +34,10 @@ var _vueObj = {
             var vm = this;
             clearTimeout(vm.query_timeout);
             vm.query_timeout = setTimeout(function() {
-                var rexp = new RegExp(vm.query.replace(' ', '.*'), 'ig');
-
-                vm.tasks = vm.tasks.map(function(task) {
-                    if (!vm.query || !vm.query.length) {
-                        task._matches_filter = true; // filter is empty, so everything matches.
-                    } else if (task.title && task.title.match && task.title.match(rexp) !== null) {
-                        task._matches_filter = true;
-                    } else {
-                        task._matches_filter = false;
-                    }
+                vm.tasks = $.map(vm.tasks, function(task) {
+                    task._matches_filter = vm.matchesFilter(task);
                     return task;
-                });
-
+                }); // apply search property
             }, 250);
         },
     },
@@ -203,6 +194,25 @@ var _vueObj = {
         },
 
         /**
+         * Determines whether the task matches the query
+         * @param task
+         * @returns {boolean}
+         */
+        matchesFilter: function(task) {
+            var vm = this;
+            if (!vm.query || !vm.query.length) {
+                return true; // filter is empty, so everything matches.
+            }
+
+            var rexp = new RegExp(vm.query.replace(' ', '.*'), 'ig');
+            if (task.title && task.title.match && task.title.match(rexp) !== null) {
+                return true;
+            } else {
+                return false;
+            }
+        },
+
+        /**
          *
          * @param t
          * @returns {*}
@@ -211,7 +221,7 @@ var _vueObj = {
             var vm        = this;
             var StartTime = moment(t.start_time || '0000-00-00');
             var EndTime   = moment(t.end_time || '0000-00-00');
-            t._matches_filter = true;
+            t._matches_filter = vm.matchesFilter(t);
 
             t._time_start_valid = StartTime.isValid();
             t._time_end_valid   = EndTime.isValid();
