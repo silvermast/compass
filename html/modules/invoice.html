@@ -96,7 +96,7 @@
                     <small class="pr-20">Worth: <strong class="text-success" v-text="'$' + numberFormat(total_worth, 2)"></strong></small>
                     <small class="pr-20">Hours: <strong class="text-success" v-text="total_hours"></strong></small>
 
-                    <input type="search" class="form-control form-control-sm borderless w-200" v-model="query" placeholder="Search" style="display:inline-block">
+                    <input type="search" class="form-control input-sm borderless w-200" v-model="query" placeholder="Search" style="display:inline-block">
 
                     <small class="pr-20 pull-right"><a class="text-muted" :href="'/api/invoice/download-csv?slug=' + invoice.slug"><i class="fa fa-download"></i> Download CSV</a></small>
                 </div>
