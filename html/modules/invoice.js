@@ -39,7 +39,7 @@ var _vueObj = {
                 vm.tasks = vm.tasks.map(function(task) {
                     if (!vm.query || !vm.query.length) {
                         task._matches_filter = true; // filter is empty, so everything matches.
-                    } else if (rexp.test(task.title)) {
+                    } else if (task.title && task.title.match && task.title.match(rexp) !== null) {
                         task._matches_filter = true;
                     } else {
                         task._matches_filter = false;
