@@ -6,6 +6,8 @@ var _vueObj = {
             dateRange: {
                 value: LocalDB.get('dashboard.filter.dateRange') || 'thisMonth',
                 options: {
+                    thisWeek: 'This Week',
+                    lastWeek: 'Last Week',
                     thisMonth: 'This Month',
                     lastMonth: 'Last Month',
                     last3Months: 'Last 3 Months',
@@ -212,6 +214,11 @@ var _vueObj = {
                 filterDates = dateRangeFromKey(vm.filter.dateRange.value);
 
             switch (vm.filter.dateRange.value) {
+                case 'today':
+
+
+                case 'thisWeek':
+                case 'lastWeek':
                 case 'thisMonth':
                 case 'lastMonth':
                     _dateFormat = 'MMM D, YYYY';

@@ -237,6 +237,21 @@ function dateRangeFromKey(key) {
     var eDate = moment();
 
     switch (key) {
+        case 'today':
+            sDate.startOf('day');
+            eDate.endOf('day');
+            break;
+
+        case 'thisWeek':
+            sDate.startOf('week');
+            eDate.endOf('week');
+            break;
+
+        case 'lastWeek':
+            sDate.subtract(1, 'week').startOf('week');
+            eDate.subtract(1, 'week').endOf('week');
+            break;
+
         case 'thisMonth':
             sDate.startOf('month');
             eDate.endOf('month');
