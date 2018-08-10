@@ -87,7 +87,12 @@ var _vueObj = {
             var vm = this;
 
             function sortInvoice(a, b) {
-                return a.client + ' - ' + a.title > b.client + ' - ' + b.title;
+                var m = [moment(a.date_added), moment(b.date_added)];
+                if (m[0] < m[1])
+                    return 1;
+                if (m[0] > m[1])
+                    return -1;
+                return 0;
             }
 
             $.get({
