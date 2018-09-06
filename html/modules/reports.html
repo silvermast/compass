@@ -6,7 +6,7 @@
 
         <div class="container-fluid">
             <div class="row">
-                <div class="col-xs-12">
+                <div class="col-sm-12">
                     <h1 class="pull-left">Reports</h1>
                     <div class="dropdown pointer pull-left mt-20 pl-20">
                         <span class="btn btn-link text-primary btn-lg dropdown-toggle"
@@ -30,7 +30,7 @@
                         <h2>Aggregates</h2>
 
                         <x-loader v-if="isBusy" />
-                        <table class="table">
+                        <table class="table mb-sm-0">
                             <tr>
                                 <th width="100">Total</th>
                                 <td v-text="'$' + numberFormat(totalEarnings, 2)"></td>
