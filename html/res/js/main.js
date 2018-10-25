@@ -200,6 +200,7 @@ var authMixin = {
     created: function() {
         var vm = this;
         vm.checkAuth();
+        $(window).on('focus', vm.checkAuth);
     },
     methods: {
         _callInit: function() {
@@ -227,7 +228,7 @@ var authMixin = {
                 url: '/api/user/me',
                 success: function(result) {
                     vm.user = result;
-                    vm._authTimeout = Timeout.set(vm.checkAuth, 10000);
+                    vm._authTimeout = Timeout.set(vm.checkAuth, 30000);
                 },
                 error: function(jqXHR) {
                     vm.user = null;
